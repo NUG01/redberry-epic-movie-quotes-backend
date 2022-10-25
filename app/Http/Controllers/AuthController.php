@@ -24,20 +24,4 @@ class AuthController extends Controller
 		}
 		return response()->json('Registration is successful!', 200);
 	}
-
-	public function verifyUser(Request $request)
-	{
-		$verificationCode = $request->code;
-		$user = User::where(['verification_code'=>$verificationCode])->first();
-		if ($user != null)
-		{
-			$user->is_verified = 1;
-			$user->save();
-			return redirect('http://localhost:5173/landing');
-		}
-		else
-		{
-			return response()->json('User can not be verified!', 401);
-		}
-	}
 }

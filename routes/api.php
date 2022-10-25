@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EmailVerificationController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('email-verification', [EmailVerificationController::class, 'verifyUser'])->name('verification.verify'); 
 Route::controller(AuthController::class)->group(function () {
-	Route::get('email-verification', 'verifyUser');
-	Route::post('register', 'register');
+	Route::post('register', 'register')->name('register.user');
 });
