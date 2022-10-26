@@ -26,9 +26,9 @@ class EmailVerificationController extends Controller
 		$user = User::where(['verification_code'=>$verificationCode])->first();
 		if ($user != null)
 		{
-			$user->email_verified_at =Carbon::now();
+			$user->email_verified_at = Carbon::now();
 			$user->save();
-			return redirect(env('FRONTEND_URL') . '/landing');
+			return redirect(env('FRONTEND_URL') . '/landing/email-verified');
 		}
 		else
 		{

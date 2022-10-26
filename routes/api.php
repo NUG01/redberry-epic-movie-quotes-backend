@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerificationController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +16,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('email-verification', [EmailVerificationController::class, 'verifyUser'])->name('verification.verify'); 
+Route::get('email-verification', [EmailVerificationController::class, 'verifyUser'])->name('verification.verify');
+
+Route::controller(ResetPasswordController::class)->group(function () {
+	Route::post('forgot-password', 'send')->name('forgotPassword.send');
+	Route::post('reset-password-form', 'update')->name('resetPassword.form');
+});
 Route::controller(AuthController::class)->group(function () {
 	Route::post('register', 'register')->name('register.user');
 });
