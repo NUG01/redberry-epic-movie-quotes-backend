@@ -22,6 +22,9 @@ Route::controller(ResetPasswordController::class)->group(function () {
 	Route::post('forgot-password', 'send')->name('forgotPassword.send');
 	Route::post('reset-password-form', 'update')->name('resetPassword.form');
 });
+
 Route::controller(AuthController::class)->group(function () {
 	Route::post('register', 'register')->name('register.user');
+	Route::post('login', 'login')->name('user.login');
+	Route::post('logout', 'logout')->name('user.logout');
 });
