@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -30,7 +32,7 @@ class AuthController extends Controller
 		$username = $request->validated()['name'];
 		$password = $request->validated()['password'];
 		$this->validated = filter_var($username, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
-
+    $token=null;
 		if (auth()->attempt([$this->validated=>$username, 'password'=>$password, 'is_verified' => 1], $request->has('remember_device')))
 		{
 			$token = auth()->attempt($request->all());
@@ -46,5 +48,16 @@ class AuthController extends Controller
 			'token_type'  => 'bearer',
 			'expired_in'  => auth()->factory()->getTTL() * 60,
 		]);
+	}
+
+	public function logout(Request $request)
+	{
+
+		return $request;
+		auth()->logout();
+
+		JWTAuth::invalidate(true);
+
+		return response()->json(['message' => 'Successfully logged out']);
 	}
 }
