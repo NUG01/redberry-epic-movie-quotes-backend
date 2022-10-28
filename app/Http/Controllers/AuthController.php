@@ -32,10 +32,11 @@ class AuthController extends Controller
 		$username = $request->validated()['name'];
 		$password = $request->validated()['password'];
 		$this->validated = filter_var($username, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
-    $token=null;
+		$token = null;
 		if (auth()->attempt([$this->validated=>$username, 'password'=>$password, 'is_verified' => 1], $request->has('remember_device')))
 		{
-			$token = auth()->attempt($request->all());
+			$token = bin2hex(random_bytes(32));
+			// $token = auth()->attempt($request->all());
 		}
 
 		if (!$token)
@@ -46,13 +47,12 @@ class AuthController extends Controller
 		return response()->json([
 			'access_token'=> $token,
 			'token_type'  => 'bearer',
-			'expired_in'  => auth()->factory()->getTTL() * 60,
+			'expires_in'  => auth()->factory()->getTTL() * 60,
 		]);
 	}
 
 	public function logout(Request $request)
 	{
-
 		return $request;
 		auth()->logout();
 

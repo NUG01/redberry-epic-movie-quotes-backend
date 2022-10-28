@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,8 +24,14 @@ Route::controller(ResetPasswordController::class)->group(function () {
 	Route::post('reset-password-form', 'update')->name('resetPassword.form');
 });
 
+Route::controller(GoogleAuthController::class)->group(function () {
+	Route::get('/auth/google/redirect', 'redirect')->middleware('web')->name('google.redirect');
+	Route::get('/auth/google/callback', 'callback')->middleware('web')->name('google.callback');
+	Route::post('/auth/google/login', 'authToken')->name('google.token');
+});
+
 Route::controller(AuthController::class)->group(function () {
-	Route::post('register', 'register')->name('register.user');
+	Route::post('register', 'register')->name('user.register');
 	Route::post('login', 'login')->name('user.login');
 	Route::post('logout', 'logout')->name('user.logout');
 });
