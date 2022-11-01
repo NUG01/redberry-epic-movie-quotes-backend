@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 
-class GoogleAuthController extends Controller
+class OAuthController extends Controller
 {
 	public function redirect()
 	{
@@ -25,7 +25,7 @@ class GoogleAuthController extends Controller
 				'access_token'=> $user->google_auth_token,
 				'token_type'  => 'bearer',
 				'expires_in'  => auth()->factory()->getTTL() * 60,
-				'email'       => $request->email,
+				'id'       => $user->id,
 			]);
 		}
 		else
@@ -46,6 +46,7 @@ class GoogleAuthController extends Controller
 				$user = User::where('email', $user->email)->first();
 				$user->google_auth_token = $token;
 				$user->save();
+				// $token = auth()->attempt(['name' => $google_user->name, 'email' => $google_user->email]);
 				return redirect()->away(env('FRONTEND_URL') . '/google/login/' . $token . '?code=' . $user->email);
 			}
 			else
@@ -55,7 +56,7 @@ class GoogleAuthController extends Controller
 					'name'             => $google_user->name,
 					'email'            => $google_user->email,
 					'is_verified'      => 1,
-					'password'         => Hash::make($random),
+					'password'         => bcrypt($random),
 					'google_id'        => 1,
 				]);
 

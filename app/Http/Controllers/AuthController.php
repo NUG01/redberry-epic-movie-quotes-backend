@@ -29,8 +29,8 @@ class AuthController extends Controller
 
 	public function login(LoginRequest $request)
 	{
-		$username = $request->validated()['name'];
-		$password = $request->validated()['password'];
+		$username = $request->name;
+		$password = $request->password;
 		$this->validated = filter_var($username, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
 		$token = null;
 		if (auth()->attempt([$this->validated=>$username, 'password'=>$password, 'is_verified' => 1], $request->has('remember_device')))
@@ -39,25 +39,45 @@ class AuthController extends Controller
 			// $token = auth()->attempt($request->all());
 		}
 
+
 		if (!$token)
 		{
 			return response()->json(['error' => 'User Does not exist!'], 404);
+		}
+		if($this->validated=='email'){
+			$user=User::where('email', $username)->first();
+		}else{
+			$user=User::where('name', $username)->first();
+
 		}
 
 		return response()->json([
 			'access_token'=> $token,
 			'token_type'  => 'bearer',
 			'expires_in'  => auth()->factory()->getTTL() * 60,
+			'id'=> $user->id,
 		]);
 	}
 
 	public function logout(Request $request)
 	{
-		return $request;
-		auth()->logout();
+		// return $request;
+		if(User::where('google_auth_token', $request->token)->first()){
+			$user=User::where('google_auth_token', $request->token)->first();
+			$user->google_auth_token=null;
+			$user->save();
+   }
+		//  auth()->logout();
+		//  JWTAuth::parseToken()->invalidate( true );
 
-		JWTAuth::invalidate(true);
+	 return response()->json(['message' => 'Successfully logged out']);
 
-		return response()->json(['message' => 'Successfully logged out']);
+
+	}
+
+
+	public function userData(Request $request){
+		$user= User::where('id', $request->id)->first();
+		return response()->json($user, 200);
 	}
 }
