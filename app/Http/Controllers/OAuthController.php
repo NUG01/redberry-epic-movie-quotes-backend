@@ -3,10 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 
 class OAuthController extends Controller
@@ -16,56 +12,29 @@ class OAuthController extends Controller
 		return Socialite::driver('google')->redirect();
 	}
 
-	public function authToken(Request $request)
-	{
-		$user = DB::table('users')->where('email', $request->email)->where('google_id', 1)->where('google_auth_token', $request->token)->first();
-		if ($user)
-		{
-			return response()->json([
-				'access_token'=> $user->google_auth_token,
-				'token_type'  => 'bearer',
-				'expires_in'  => auth()->factory()->getTTL() * 60,
-				'id'       => $user->id,
-			]);
-		}
-		else
-		{
-			return response()->json('User not found!', 401);
-		}
-	}
-
 	public function callback()
 	{
-		try
-		{
-			$google_user = Socialite::driver('google')->user();
-			$user = User::where('email', $google_user->email)->first();
-			if ($user)
-			{
-				$token = bin2hex(random_bytes(32));
-				$user = User::where('email', $user->email)->first();
-				$user->google_auth_token = $token;
-				$user->save();
-				// $token = auth()->attempt(['name' => $google_user->name, 'email' => $google_user->email]);
-				return redirect()->away(env('FRONTEND_URL') . '/google/login/' . $token . '?code=' . $user->email);
-			}
-			else
-			{
-				$random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
-				User::create([
-					'name'             => $google_user->name,
-					'email'            => $google_user->email,
-					'is_verified'      => 1,
-					'password'         => bcrypt($random),
-					'google_id'        => 1,
-				]);
 
-				return redirect(env('FRONTEND_URL') . '/landing/login');
-			}
-		}
-		catch (Exception $e)
-		{
-			return redirect(env('BACK_URL') . '/auth/google/redirect');
-		}
+
+		$googleUser = Socialite::driver('google')->stateless()->user();
+ 		$random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
+
+    $user = User::updateOrCreate([
+        'google_id' => $googleUser->id,
+			],
+				 [
+        'name' => $googleUser->name,
+        'email' => $googleUser->email,
+        'google_token' => $googleUser->token,
+				'password'=>bcrypt($random),
+				'is_verified'=>1,
+        'google_refresh_token' => $googleUser->refreshToken,
+    ]);
+ 
+    auth()->user($user);
+		$token = auth()->attempt(['name' => $googleUser->name, 'email' => $googleUser->email, 'password'=>$random]);
+		$expires_in=auth()->factory()->getTTL() * 60;
+		$token_type='bearer';
+		return redirect(env('FRONTEND_URL') . '/oauth' . '?token=' . $token . '&expires_in=' . $expires_in . '&token_type=' . $token_type . '&name=' . $googleUser->name . '&email=' . $googleUser->email);
 	}
 }

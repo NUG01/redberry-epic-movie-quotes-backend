@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Mail;
 
 class PasswordResetController extends Controller
 {
-	public function confirmPasswordReset(ResetPasswordRequest $request)
+	public function submitForgetPasswordForm(ResetPasswordRequest $request)
 	{
 		$token = bin2hex(random_bytes(32));
 		DB::table('password_resets')->insert([
@@ -30,7 +30,7 @@ class PasswordResetController extends Controller
 		return response()->json('Email sent!', 200);
 	}
 
-	public function changePassword(RecoverPasswordRequest $request)
+	public function submitResetPasswordForm (RecoverPasswordRequest $request)
 	{
 		$checkToken = DB::table('password_resets')->where([
 			'token'=> $request->token['id'],

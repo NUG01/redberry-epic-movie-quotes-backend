@@ -22,7 +22,8 @@ return new class() extends Migration {
 			$table->rememberToken();
 			$table->timestamps();
 			$table->string('google_id')->nullable();
-			$table->string('google_auth_token')->nullable();
+			$table->string('google_token')->nullable();
+			$table->string('google_refresh_token')->nullable();
 		});
 	}
 

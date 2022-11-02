@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,21 +19,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('email-verification', [EmailVerificationController::class, 'verifyUser'])->name('verification.verify');
+Route::get('auth-user', [UserController::class, 'userData'])->name('user.data');
 
 Route::controller(PasswordResetController::class)->group(function () {
-	Route::post('forgot-password', 'confirmPasswordReset')->name('resetPassword.confirm');
-	Route::post('change-password', 'changePassword')->name('password.change');
+	Route::post('forgot-password', 'submitForgetPasswordForm')->name('resetPassword.confirm');
+	Route::post('reset-password', 'submitResetPasswordForm')->name('password.reset');
 });
 
 Route::controller(OAuthController::class)->group(function () {
 	Route::get('auth/google/redirect', 'redirect')->middleware('web')->name('google.redirect');
 	Route::get('auth/google/callback', 'callback')->middleware('web')->name('google.callback');
-	Route::post('auth/google/login', 'authToken')->name('google.token');
 });
 
 Route::controller(AuthController::class)->group(function () {
 	Route::post('register', 'register')->name('user.register');
 	Route::post('login', 'login')->name('user.login');
 	Route::post('logout', 'logout')->name('user.logout');
-	Route::post('auth-user', 'userData')->name('user.data');
 });
