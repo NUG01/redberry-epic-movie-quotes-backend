@@ -17,7 +17,6 @@ class OAuthController extends Controller
 
 
 		$googleUser = Socialite::driver('google')->stateless()->user();
- 		$random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
 
     $user = User::updateOrCreate([
         'google_id' => $googleUser->id,
@@ -26,15 +25,13 @@ class OAuthController extends Controller
         'name' => $googleUser->name,
         'email' => $googleUser->email,
         'google_token' => $googleUser->token,
-				'password'=>bcrypt($random),
+				'password'=>bcrypt($googleUser->id),
 				'is_verified'=>1,
         'google_refresh_token' => $googleUser->refreshToken,
     ]);
  
     auth()->user($user);
-		$token = auth()->attempt(['name' => $googleUser->name, 'email' => $googleUser->email, 'password'=>$random]);
-		$expires_in=auth()->factory()->getTTL() * 60;
-		$token_type='bearer';
-		return redirect(env('FRONTEND_URL') . '/oauth' . '?token=' . $token . '&expires_in=' . $expires_in . '&token_type=' . $token_type . '&name=' . $googleUser->name . '&email=' . $googleUser->email);
+		$token = auth()->attempt(['name' => $googleUser->name, 'email' => $googleUser->email, 'password'=>$googleUser->id]);
+		return redirect(env('FRONTEND_URL') . '/oauth' . '?token=' . $token . '&expires_in=' . auth()->factory()->getTTL() * 60 . '&token_type=bearer');
 	}
 }
