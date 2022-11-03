@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Clockwork\Request\Request;
 use Illuminate\Support\Facades\Hash;
-use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -29,35 +28,29 @@ class AuthController extends Controller
 
 	public function login(LoginRequest $request)
 	{
-		$username = $request->validated()['name'];
-		$password = $request->validated()['password'];
-		$this->validated = filter_var($username, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
-    $token=null;
-		if (auth()->attempt([$this->validated=>$username, 'password'=>$password, 'is_verified' => 1], $request->has('remember_device')))
-		{
-			$token = auth()->attempt($request->all());
-		}
-
+		$username = $request->name;
+		$password = $request->password;
+		$usernameType = filter_var($username, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+		$token = null;
+		$token = auth()->attempt([$usernameType=>$username, 'password'=>$password]);
 		if (!$token)
 		{
 			return response()->json(['error' => 'User Does not exist!'], 404);
 		}
-
+		
 		return response()->json([
 			'access_token'=> $token,
 			'token_type'  => 'bearer',
-			'expired_in'  => auth()->factory()->getTTL() * 60,
+			'expires_in'  => auth()->factory()->getTTL() * 60,
 		]);
 	}
 
-	public function logout(Request $request)
+	public function logout()
 	{
+    auth()->logout();
+	 return response()->json(['message' => 'Successfully logged out']);
 
-		return $request;
-		auth()->logout();
 
-		JWTAuth::invalidate(true);
+}
 
-		return response()->json(['message' => 'Successfully logged out']);
-	}
 }

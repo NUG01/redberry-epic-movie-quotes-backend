@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
-class ResetPasswordController extends Controller
+class PasswordResetController extends Controller
 {
-	public function send(ResetPasswordRequest $request)
+	public function submitForgetPasswordForm(ResetPasswordRequest $request)
 	{
 		$token = bin2hex(random_bytes(32));
 		DB::table('password_resets')->insert([
@@ -30,7 +30,7 @@ class ResetPasswordController extends Controller
 		return response()->json('Email sent!', 200);
 	}
 
-	public function update(RecoverPasswordRequest $request)
+	public function submitResetPasswordForm (RecoverPasswordRequest $request)
 	{
 		$checkToken = DB::table('password_resets')->where([
 			'token'=> $request->token['id'],
