@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
 {
-
 	public function rules()
 	{
 		return [
@@ -15,5 +14,4 @@ class LoginRequest extends FormRequest
 			'remember_device'       => '',
 		];
 	}
-
 }

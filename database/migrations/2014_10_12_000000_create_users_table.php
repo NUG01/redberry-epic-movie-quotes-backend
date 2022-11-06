@@ -16,6 +16,7 @@ return new class() extends Migration {
 			$table->id();
 			$table->string('name');
 			$table->string('email')->unique();
+			$table->string('thumbnail')->default('assets/LaracastImage.png');
 			$table->integer('is_verified')->default(0);
 			$table->string('password');
 			$table->string('verification_code')->nullable();

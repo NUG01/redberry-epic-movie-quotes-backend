@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-
 class UserController extends Controller
 {
-    public function userData()
-		{
+	public function userData()
+	{
 		return response()->json(auth()->user(), 200);
-	 
-	  }
+	}
 }

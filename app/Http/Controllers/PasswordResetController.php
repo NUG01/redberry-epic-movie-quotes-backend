@@ -22,15 +22,16 @@ class PasswordResetController extends Controller
 		]);
 
 		$url = env('FRONTEND_URL') . '/landing/recover-password/' . $token . '?email=' . $request->email;
-		$body = 'You asked for password reset? then reset it';
-		Mail::send('emails.reset', ['url'=>$url, 'body'=>$body], function ($message) use ($request) {
+		$body = 'Forgot password? No worries, you can recover it easily.';
+		$buttonText = 'Recover password';
+		Mail::send('emails.reset', ['url'=>$url, 'body'=>$body, 'buttonText'=>$buttonText], function ($message) use ($request) {
 			$message->from(env('MAIL_USERNAME'), 'Epic Movie Quotes');
 			$message->to($request->email, 'Epic Movie Quotes')->subject('Reset Password');
 		});
 		return response()->json('Email sent!', 200);
 	}
 
-	public function submitResetPasswordForm (RecoverPasswordRequest $request)
+	public function submitResetPasswordForm(RecoverPasswordRequest $request)
 	{
 		$checkToken = DB::table('password_resets')->where([
 			'token'=> $request->token['id'],
