@@ -20,9 +20,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('email-verification', [EmailVerificationController::class, 'verifyUser'])->name('verification.verify');
-Route::get('auth-user', [UserController::class, 'userData'])->name('user.data');
 
-Route::controller(UserProfileController::class)->group(function () {
+Route::controller(UserController::class)->group(function () {
+	Route::get('auth-user', 'userData')->name('user.data');
 	Route::patch('update-profile', 'update')->name('update.profile');
 	Route::patch('update-profile/google', 'updateGoogleProfile')->name('update.googleProfile');
 	Route::post('update-email', 'submitChangeEmail')->name('update.email');
