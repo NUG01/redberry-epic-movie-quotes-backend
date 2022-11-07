@@ -22,7 +22,7 @@ Route::get('email-verification', [EmailVerificationController::class, 'verifyUse
 
 Route::controller(UserController::class)->group(function () {
 	Route::get('auth-user', 'userData')->name('user.data');
-	Route::patch('update-profile', 'update')->name('update.profile');
+	Route::post('update-profile', 'update')->name('update.profile');
 	Route::post('update-email', 'submitChangeEmail')->name('update.email');
 });
 

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -20,11 +21,12 @@ class UserController extends Controller
 
 	public function update(UpdateProfileRequest $request)
 	{
-
 		$data = $request->validated();
 		$email = auth()->user()->email;
 		$currentThumbnail = auth()->user()->thumbnail;
+		$thumbnail = $request->file('thumbnail')->store('images'); 
 
+		
 		if($request->password){
 
 			$data['password'] = bcrypt($data['password']);
@@ -57,17 +59,15 @@ class UserController extends Controller
 			});
 		}
 		$data['email'] = $email;
-
-		if ($currentThumbnail && $currentThumbnail != 'assets/LaracastImage.png' && $request->thumbnail)
+		if ($currentThumbnail && $currentThumbnail != 'assets/LaracastImage.png' && $thumbnail)
 		{
-			$absolutePath = public_path($currentThumbnail);
+			$absolutePath = storage_path('/app/' . $currentThumbnail);
 			File::delete($absolutePath);
 		}
 
-		if ($request->thumbnail)
+		if ($thumbnail)
 		{
-			$relativePath = $this->saveImage($data['thumbnail']);
-			$data['thumbnail'] = $relativePath;
+			$data['thumbnail'] = $thumbnail;
 		}
 		else
 		{
@@ -82,10 +82,6 @@ class UserController extends Controller
 	public function submitChangeEmail(Request $request)
 	{
 
-		// User::where('id', auth()->user()->id)->update([
-		// 	'email'=> $request->email,
-		// ]);
-		// 	return response()->json('Email changed successfully!', 200);
 		$checkToken = DB::table('email_changes')->where([
 			'token'=> $request->token,
 		])->first();
@@ -105,33 +101,5 @@ class UserController extends Controller
 			])->delete();
 			return response()->json('Email changed successfully!', 200);
 		}
-	}
-
-	private function saveImage($image)
-	{
-		if (preg_match('/^data:image\/(\w+);base64,/', $image, $type))
-		{
-			$image = substr($image, strpos($image, ',') + 1);
-			$type = strtolower($type[1]);
-
-			if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png']))
-			{
-				throw new \Exception('invalid image type');
-			}
-			$image = str_replace(' ', '+', $image);
-			$image = base64_decode($image);
-		}
-
-		$dir = 'images/';
-		$file = Str::random(12) . '.' . $type;
-		$absolutePath = public_path($dir);
-		$relativePath = $dir . $file;
-		if (!File::exists($absolutePath))
-		{
-			File::makeDirectory($absolutePath, 0755, true);
-		}
-		file_put_contents($relativePath, $image);
-
-		return $relativePath;
 	}
 }
