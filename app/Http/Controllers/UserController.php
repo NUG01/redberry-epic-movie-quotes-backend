@@ -21,15 +21,19 @@ class UserController extends Controller
 
 	public function update(UpdateProfileRequest $request)
 	{
+
 		$data = $request->validated();
 		$email = auth()->user()->email;
 		$currentThumbnail = auth()->user()->thumbnail;
 
-		$data['password'] = bcrypt($data['password']);
+		if($request->password){
+
+			$data['password'] = bcrypt($data['password']);
+		}
 
 		$token = bin2hex(random_bytes(32));
 
-		if ($request->email != $email)
+		if ($request->email != $email && $request->email)
 		{
 			$oldEmailChanges = DB::table('email_changes')->where('email', $email);
 
@@ -72,31 +76,6 @@ class UserController extends Controller
 		}
 
 		User::where('email', $email)->update($data);
-		return response()->json($data, 200);
-	}
-
-	
-	public function updateGoogleProfile(UpdateGoogleProfileRequest $request)
-	{
-		$data = $request->validated();
-		$currentThumbnail = auth()->user()->thumbnail;
-
-		if ($currentThumbnail && $currentThumbnail != 'assets/LaracastImage.png' && $request->thumbnail)
-		{
-			$absolutePath = public_path($currentThumbnail);
-			File::delete($absolutePath);
-		}
-		if ($request->thumbnail)
-		{
-			$relativePath = $this->saveImage($data['thumbnail']);
-			$data['thumbnail'] = $relativePath;
-		}
-		else
-		{
-			$data['thumbnail'] = $currentThumbnail;
-		}
-
-		User::where('email', auth()->user()->email)->update($data);
 		return response()->json($data, 200);
 	}
 	
