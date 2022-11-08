@@ -4,13 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateProfileRequest;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -32,31 +29,18 @@ class UserController extends Controller
 			$data['password'] = bcrypt($data['password']);
 		}
 
-		$token = bin2hex(random_bytes(32));
+		$token = auth()->user()->verification_code;
 
 		if ($request->email != $email && $request->email)
 		{
-			$oldEmailChanges = DB::table('email_changes')->where('email', $email);
-
-			if ($oldEmailChanges)
-			{
-				$oldEmailChanges->delete();
-			}
-
-			DB::table('email_changes')->insert([
-				'email'         => $email,
-				'new_email'     => $request->email,
-				'token'         => $token,
-				'created_at'    => Carbon::now(),
-			]);
-
-			$url = env('FRONTEND_URL') . '/update-email/' . $token . '?email=' . $email;
+			$url = env('FRONTEND_URL') . '/update-email/' . $token . '?email=' . $request->email;
 			$body = 'You asked for Email change? then change it.';
 			$buttonText = 'Change email';
 			Mail::send('emails.reset', ['url'=>$url, 'body'=>$body, 'buttonText'=>$buttonText], function ($message) use ($request) {
 				$message->from(env('MAIL_USERNAME'), 'Epic Movie Quotes');
 				$message->to($request->email, 'Epic Movie Quotes')->subject('Change Email');
 			});
+			$data['is_verified']=0;
 		}
 		$data['email'] = $email;
 		if ($currentThumbnail && $currentThumbnail != 'assets/LaracastImage.png' && $thumbnail)
@@ -67,13 +51,13 @@ class UserController extends Controller
 
 		if ($thumbnail)
 		{
+			
 			$data['thumbnail'] = $thumbnail;
 		}
 		else
 		{
 			$data['thumbnail'] = $currentThumbnail;
 		}
-
 		User::where('email', $email)->update($data);
 		return response()->json($data, 200);
 	}
@@ -81,25 +65,11 @@ class UserController extends Controller
 	
 	public function submitChangeEmail(Request $request)
 	{
-
-		$checkToken = DB::table('email_changes')->where([
-			'token'=> $request->token,
-		])->first();
-		if (!$checkToken)
-		{
-			return response()->json('Email can not be changed!', 401);
+		
+		if($request->email){
+			DB::table('users')->where('verification_code', $request->token)->update(['email'=>$request->email, 'is_verified'=>1]);
 		}
-		elseif ($checkToken)
-		{
-			$newEmail = DB::table('email_changes')->where('token', $checkToken->token)->first();
-			User::where('email', $checkToken->email)->update([
-				'email'=> $newEmail->new_email,
-			]);
-
-			DB::table('email_changes')->where([
-				'email'=> $checkToken->email,
-			])->delete();
 			return response()->json('Email changed successfully!', 200);
 		}
 	}
-}
+
