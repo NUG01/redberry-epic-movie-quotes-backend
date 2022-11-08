@@ -14,23 +14,23 @@ class OAuthController extends Controller
 
 	public function callback()
 	{
-
-
 		$googleUser = Socialite::driver('google')->stateless()->user();
 
-    $user = User::updateOrCreate([
-        'google_id' => $googleUser->id,
+		$user = User::updateOrCreate(
+			[
+				'google_id' => $googleUser->id,
 			],
-				 [
-        'name' => $googleUser->name,
-        'email' => $googleUser->email,
-        'google_token' => $googleUser->token,
-				'password'=>bcrypt($googleUser->id),
-				'is_verified'=>1,
-        'google_refresh_token' => $googleUser->refreshToken,
-    ]);
- 
-    auth()->user($user);
+			[
+				'name'                 => $googleUser->name,
+				'email'                => $googleUser->email,
+				'google_token'         => $googleUser->token,
+				'password'             => bcrypt($googleUser->id),
+				'is_verified'          => 1,
+				'google_refresh_token' => $googleUser->refreshToken,
+			]
+		);
+
+		auth()->user($user);
 		$token = auth()->attempt(['name' => $googleUser->name, 'email' => $googleUser->email, 'password'=>$googleUser->id]);
 		return redirect(env('FRONTEND_URL') . '/oauth' . '?token=' . $token . '&expires_in=' . auth()->factory()->getTTL() * 60 . '&token_type=bearer');
 	}

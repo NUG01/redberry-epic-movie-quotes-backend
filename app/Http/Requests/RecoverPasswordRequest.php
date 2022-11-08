@@ -14,9 +14,9 @@ class RecoverPasswordRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'password'             => 'required|min:8|max:15',
-			'token'                => 'required',
-			'email'                => '',
+			'password'             => ['required', 'min:8', 'max:15'],
+			'token'                => ['required'],
+			'email'                => [''],
 		];
 	}
 }

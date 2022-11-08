@@ -19,7 +19,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('email-verification', [EmailVerificationController::class, 'verifyUser'])->name('verification.verify');
-Route::get('auth-user', [UserController::class, 'userData'])->name('user.data');
+
+Route::controller(UserController::class)->group(function () {
+	Route::get('auth-user', 'userData')->name('user.data');
+	Route::post('update-profile', 'update')->name('update.profile');
+	Route::post('update-email', 'submitChangeEmail')->name('update.email');
+});
 
 Route::controller(PasswordResetController::class)->group(function () {
 	Route::post('forgot-password', 'submitForgetPasswordForm')->name('resetPassword.confirm');

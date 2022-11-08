@@ -8,29 +8,26 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 
 class PasswordResetController extends Controller
 {
 	public function submitForgetPasswordForm(ResetPasswordRequest $request)
 	{
-		$token = bin2hex(random_bytes(32));
+		$code = bin2hex(random_bytes(32));
 		DB::table('password_resets')->insert([
 			'email'     => $request->email,
-			'token'     => $token,
+			'token'     => $code,
 			'created_at'=> Carbon::now(),
 		]);
 
-		$url = env('FRONTEND_URL') . '/landing/recover-password/' . $token . '?email=' . $request->email;
-		$body = 'You asked for password reset? then reset it';
-		Mail::send('emails.reset', ['url'=>$url, 'body'=>$body], function ($message) use ($request) {
-			$message->from(env('MAIL_USERNAME'), 'Epic Movie Quotes');
-			$message->to($request->email, 'Epic Movie Quotes')->subject('Reset Password');
-		});
+		$url = env('FRONTEND_URL') . '/landing/recover-password/' . $code . '?email=' . $request->email;
+		$body = 'Forgot password? No worries, you can recover it easily.';
+		$buttonText = 'Recover password';
+		EmailVerificationController::sendVerifyEMail($request->email, $code, 'Reset Password', 'emails.reset', $body, $buttonText, $url);
 		return response()->json('Email sent!', 200);
 	}
 
-	public function submitResetPasswordForm (RecoverPasswordRequest $request)
+	public function submitResetPasswordForm(RecoverPasswordRequest $request)
 	{
 		$checkToken = DB::table('password_resets')->where([
 			'token'=> $request->token['id'],

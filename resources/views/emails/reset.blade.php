@@ -240,15 +240,13 @@
 
                                                                     <p
                                                                         style="font-size:16px;font-weight:400;font-family:'Inter',sans-serif;margin-bottom:24px !important;color:#ffffff;">
-                                                                        Forgot password? No worries, you can recover it
-                                                                        easily.</p>
+                                                                        {{ $body }}</p>
 
                                                                     <a href="{{ $url }}" target="_blank"
                                                                         class="f-fallback button"
                                                                         style="position:relative;margin-bottom:30px;padding:13px 7px; font-size:16px;font-weight:400;font-family:Sans-serif; color: #FFF; border:none; background-color: #E31221 !important; display: text-align:center; text-decoration: none; border-radius: 8px; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16); -webkit-text-size-adjust: none; box-sizing: border-box;">
                                                                         <span class="ninjaButton"
-                                                                            style="font-family:'Inter',sans-serif;">Recover
-                                                                            password</span></a>
+                                                                            style="font-family:'Inter',sans-serif;">{{ $buttonText }}</span></a>
                                                                     <p
                                                                         style="font-size:16px;font-weight:400;font-family:'Inter',sans-serif;margin-bottom:32px !important;color:#ffffff;">
                                                                         If clicking doesn't work, you can try copying
