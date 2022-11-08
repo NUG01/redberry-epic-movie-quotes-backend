@@ -17,7 +17,7 @@ class UpdateProfileRequest extends FormRequest
 		return [
 			'name'                 => ['min:3', 'max:15', Rule::unique('users')->ignore(auth()->user()->id, 'id')],
 			'email'                => ['email', Rule::unique('users')->ignore(auth()->user()->id, 'id')],
-			'password'             => ['min:8','max:15'],
+			'password'             => ['min:8', 'max:15'],
 			'thumbnail'            => ['image'],
 		];
 	}

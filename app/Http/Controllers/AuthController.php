@@ -20,7 +20,7 @@ class AuthController extends Controller
 
 		if ($user != null)
 		{
-			EmailVerificationController::sendEmail($user->name, $user->email, $user->verification_code);
+			EmailVerificationController::sendEmail($user->name, $user->email, $user->verification_code, 'Account Confirmation', 'emails.register');
 		}
 		return response()->json('Registration is successful!', 200);
 	}
