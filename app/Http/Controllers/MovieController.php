@@ -6,10 +6,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\AddMovieRequest;
 use App\Models\Movie;
+use App\Models\User;
 
 class MovieController extends Controller
 {
-  public function addMovies(AddMovieRequest $request, Movie $movie){
+  public function create(AddMovieRequest $request, Movie $movie){
       $genre = explode(',',$request->genre);
       $movie->genre=$genre;
       $thumbnail = $request->file('thumbnail')->store('images');
@@ -26,7 +27,7 @@ class MovieController extends Controller
     }
 
 
-    public function getMovies(){
-      return auth()->user()->movies->all();
+    public function index(){
+      return response()->json(User::moviesList(), 200);
     }
 }
