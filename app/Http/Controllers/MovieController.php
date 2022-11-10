@@ -28,6 +28,6 @@ class MovieController extends Controller
 
 
     public function index(){
-      return response()->json(User::moviesList(), 200);
+      return response()->json(Movie::where('user_id', auth()->user()->id)->get(), 200);
     }
 }

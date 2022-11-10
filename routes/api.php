@@ -43,6 +43,6 @@ Route::controller(AuthController::class)->group(function () {
 	Route::post('logout', 'logout')->name('user.logout');
 });
 Route::controller(MovieController::class)->group(function () {
-	Route::get('movies', 'index')->name('movies.data');
+	Route::get('movies', 'index')->name('movies.index');
 	Route::post('movies', 'create')->name('movie.create');
 });
