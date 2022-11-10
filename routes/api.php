@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\MovieController;
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\UserController;
@@ -40,4 +41,8 @@ Route::controller(AuthController::class)->group(function () {
 	Route::post('register', 'register')->name('user.register');
 	Route::post('login', 'login')->name('user.login');
 	Route::post('logout', 'logout')->name('user.logout');
+});
+Route::controller(MovieController::class)->group(function () {
+	Route::get('movies', 'index')->name('movies.index');
+	Route::post('movies', 'create')->name('movie.create');
 });
