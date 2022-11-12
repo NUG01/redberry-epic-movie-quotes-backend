@@ -41,10 +41,8 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 		return [];
 	}
 
-
 	public function movies(): HasMany
 	{
-	return	$this->hasMany(Movie::class);
+		return	$this->hasMany(Movie::class);
 	}
-
 }
