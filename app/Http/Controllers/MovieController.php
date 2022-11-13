@@ -7,15 +7,15 @@ use App\Models\Movie;
 
 class MovieController extends Controller
 {
+	public function index()
+	{
+		return response()->json(Movie::where('user_id', auth()->user()->id)->get(), 200);
+	}
+
 	public function create(AddMovieRequest $request, Movie $movie)
 	{
 		$this->updateOrCreateMovie($request, $movie);
 		return response()->json('Movie added successfully!', 200);
-	}
-
-	public function index()
-	{
-		return response()->json(Movie::where('user_id', auth()->user()->id)->get(), 200);
 	}
 
 	public function destroy($id)
