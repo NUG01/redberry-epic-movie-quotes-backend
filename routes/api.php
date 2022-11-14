@@ -5,6 +5,7 @@ use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -45,4 +46,13 @@ Route::controller(AuthController::class)->group(function () {
 Route::controller(MovieController::class)->group(function () {
 	Route::get('movies', 'index')->name('movies.index');
 	Route::post('movies', 'create')->name('movie.create');
+	Route::post('update-movie', 'update')->name('movie.update');
+	Route::delete('movies/{id}', 'destroy')->name('movie.delete');
+});
+Route::controller(QuoteController::class)->group(function () {
+	Route::get('quotes/{id}', 'index')->name('quotes.index');
+	Route::post('quotes', 'create')->name('quotes.create');
+	Route::post('update-quote', 'update')->name('quote.update');
+	Route::delete('quotes/{id}', 'destroy')->name('quotes.delete');
+	Route::get('quote/{id}', 'getChoosenQuote')->name('quote.show');
 });
