@@ -9,13 +9,13 @@ class QuoteController extends Controller
 {
 	public function index($id)
 	{
-		$quote = Quote::where('movie_id', $id)->get();
-		return response()->json($quote, 200);
+		$quoteList = Quote::where('movie_id', $id)->get();
+		return response()->json($quoteList, 200);
 	}
 
 	public function getChoosenQuote($id)
 	{
-		$quote = Quote::where('movie_id', $id)->get();
+		$quote = Quote::where('id', $id)->first();
 		return response()->json($quote, 200);
 	}
 
