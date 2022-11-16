@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddQuoteRequest extends FormRequest
+class AddCommentRequest extends FormRequest
 {
 	/**
 	 * Get the validation rules that apply to the request.
@@ -14,12 +14,9 @@ class AddQuoteRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'quote_en'   => ['required'],
-			'quote_ka'   => ['required'],
-			'thumbnail'  => ['image'],
-			'id'         => [''],
-			'quote_id'   => [''],
-			'user_id'    => [''],
+			'body'     => ['required'],
+			'quote_id' => ['required'],
+			'user_id'  => ['required'],
 		];
 	}
 }

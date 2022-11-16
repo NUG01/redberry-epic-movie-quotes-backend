@@ -13,6 +13,11 @@ class QuoteController extends Controller
 		return response()->json($quoteList, 200);
 	}
 
+	public function getAllQuotes()
+	{
+		return response()->json(Quote::latest()->get(), 200);
+	}
+
 	public function getChoosenQuote($id)
 	{
 		$quote = Quote::where('id', $id)->first();
@@ -41,6 +46,7 @@ class QuoteController extends Controller
 	private function updateOrCreateQuote($request, $quote)
 	{
 		if ($request->id ? $quote->movie_id = $request->id : null);
+		if ($request->user_id ? $quote->user_id = $request->user_id : null);
 		$thumbnail = $request->file('thumbnail')->store('images');
 		$quote->thumbnail = $thumbnail;
 		$quote->setTranslation('quote', 'en', $request->quote_en);

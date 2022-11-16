@@ -7,9 +7,14 @@ use App\Models\Movie;
 
 class MovieController extends Controller
 {
-	public function index()
+	public function index($id)
 	{
-		return response()->json(Movie::where('user_id', auth()->user()->id)->get(), 200);
+		return response()->json(Movie::where('user_id', $id)->get(), 200);
+	}
+
+	public function getAllMovies()
+	{
+		return response()->json(Movie::get(), 200);
 	}
 
 	public function create(AddMovieRequest $request, Movie $movie)
@@ -37,7 +42,7 @@ class MovieController extends Controller
 		$movie->genre = $genre;
 		$thumbnail = $request->file('thumbnail')->store('images');
 		$movie->thumbnail = $thumbnail;
-		$movie->user_id = auth()->user()->id;
+		if ($request->user_id ? $movie->user_id = $request->user_id : null);
 		$movie->setTranslation('name', 'en', $request->name_en);
 		$movie->setTranslation('name', 'ka', $request->name_ka);
 		$movie->setTranslation('director', 'en', $request->director_en);

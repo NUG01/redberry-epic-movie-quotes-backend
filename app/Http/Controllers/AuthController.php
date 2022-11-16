@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+	public function index()
+	{
+		return response()->json(User::get(), 200);
+	}
+
+	public function getGoogleUser($id)
+	{
+		return response()->json(User::where('id', $id)->first(), 200);
+	}
+
 	public function register(RegisterRequest $request)
 	{
 		$user = User::create([
@@ -40,6 +50,7 @@ class AuthController extends Controller
 			'access_token'=> $token,
 			'token_type'  => 'bearer',
 			'expires_in'  => auth()->factory()->getTTL() * 60,
+			'userData'    => auth()->user(),
 		]);
 	}
 

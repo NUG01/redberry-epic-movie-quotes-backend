@@ -32,6 +32,6 @@ class OAuthController extends Controller
 
 		auth()->user($user);
 		$token = auth()->attempt(['name' => $googleUser->name, 'email' => $googleUser->email, 'password'=>$googleUser->id]);
-		return redirect(env('FRONTEND_URL') . '/oauth' . '?token=' . $token . '&expires_in=' . auth()->factory()->getTTL() * 60 . '&token_type=bearer');
+		return redirect(env('FRONTEND_URL') . '/oauth' . '?token=' . $token . '&user_id=' . $user->id . '&expires_in=' . auth()->factory()->getTTL() * 60 . '&token_type=bearer');
 	}
 }

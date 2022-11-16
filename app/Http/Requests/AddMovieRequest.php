@@ -23,6 +23,7 @@ class AddMovieRequest extends FormRequest
 			'description_ka'=> ['required'],
 			'thumbnail'     => ['image'],
 			'id'            => [''],
+			'user_id'       => [''],
 		];
 	}
 }
