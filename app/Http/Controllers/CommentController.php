@@ -7,16 +7,17 @@ use App\Models\Comment;
 
 class CommentController extends Controller
 {
-	public function index($id)
+	public function index()
+	{
+		return response()->json(Comment::all(), 200);
+	}
+	
+	public function show($id)
 	{
 		$commentList = Comment::where('quote_id', $id)->get();
 		return response()->json($commentList, 200);
 	}
 
-	public function getAllComments()
-	{
-		return response()->json(Comment::get(), 200);
-	}
 
 	public function create(AddCommentRequest $request)
 	{

@@ -13,12 +13,12 @@ class QuoteController extends Controller
 		return response()->json($quoteList, 200);
 	}
 
-	public function getAllQuotes()
+	public function getQuotesForNewsFeed()
 	{
 		return response()->json(Quote::latest()->get(), 200);
 	}
 
-	public function getChoosenQuote($id)
+	public function show($id)
 	{
 		$quote = Quote::where('id', $id)->first();
 		return response()->json($quote, 200);

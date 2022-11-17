@@ -14,9 +14,9 @@ class AddCommentRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'body'     => ['required'],
-			'quote_id' => ['required'],
-			'user_id'  => ['required'],
+			'body'     => ['required', 'string'],
+			'quote_id' => ['required', 'numeric'],
+			'user_id'  => ['required', 'numeric'],
 		];
 	}
 }

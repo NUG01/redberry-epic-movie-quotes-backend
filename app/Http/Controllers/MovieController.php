@@ -7,15 +7,17 @@ use App\Models\Movie;
 
 class MovieController extends Controller
 {
-	public function index($id)
+	public function index()
+	{
+		return response()->json(Movie::get(), 200);
+	}
+
+	
+	public function show($id)
 	{
 		return response()->json(Movie::where('user_id', $id)->get(), 200);
 	}
 
-	public function getAllMovies()
-	{
-		return response()->json(Movie::get(), 200);
-	}
 
 	public function create(AddMovieRequest $request, Movie $movie)
 	{

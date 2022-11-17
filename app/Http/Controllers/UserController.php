@@ -10,6 +10,18 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+
+	public function index()
+	{
+		return response()->json(User::get(), 200);
+	}
+
+	public function getGoogleUser($id)
+	{
+		return response()->json(User::where('id', $id)->first(), 200);
+	}
+
+	
 	public function userData()
 	{
 		return response()->json(auth()->user(), 200);

@@ -9,15 +9,6 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-	public function index()
-	{
-		return response()->json(User::get(), 200);
-	}
-
-	public function getGoogleUser($id)
-	{
-		return response()->json(User::where('id', $id)->first(), 200);
-	}
 
 	public function register(RegisterRequest $request)
 	{
