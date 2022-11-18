@@ -16,7 +16,7 @@ class AddMovieRequest extends FormRequest
 		return [
 			'name_en'       => ['required', 'string'],
 			'name_ka'       => ['required', 'string'],
-			'genre'         => ['required', 'array'],
+			'genre'         => ['required', 'string'],
 			'director_en'   => ['required', 'string'],
 			'director_ka'   => ['required', 'string'],
 			'description_en'=> ['required', 'string'],

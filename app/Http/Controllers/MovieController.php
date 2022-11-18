@@ -9,7 +9,7 @@ class MovieController extends Controller
 {
 	public function index()
 	{
-		return response()->json(Movie::get(), 200);
+		return response()->json(Movie::all(), 200);
 	}
 
 	

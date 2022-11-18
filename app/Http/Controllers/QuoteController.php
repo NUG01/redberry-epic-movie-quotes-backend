@@ -18,16 +18,15 @@ class QuoteController extends Controller
 		return response()->json(Quote::latest()->get(), 200);
 	}
 
-	public function show($id)
+	public function show(Quote $id)
 	{
-		$quote = Quote::where('id', $id)->first();
-		return response()->json($quote, 200);
+		return response()->json($id, 200);
 	}
 
-	public function destroy($id)
+	public function destroy(Quote $id)
 	{
-		Quote::where('id', $id)->delete();
-		return response()->json('Successfully deleted!', 200);
+		$id->delete();
+		return response()->json('Successfully deleted1!', 200);
 	}
 
 	public function update(AddQuoteRequest $request)
@@ -40,7 +39,7 @@ class QuoteController extends Controller
 	public function create(AddQuoteRequest $request, Quote $quote)
 	{
 		$this->updateOrCreateQuote($request, $quote);
-		return response()->json('Quote added successfully!', 200);
+		return response()->json(['message'=>'Quote added successfully!', 'attributes'=> $quote->latest()->get()], 200);
 	}
 
 	private function updateOrCreateQuote($request, $quote)
