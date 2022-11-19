@@ -6,12 +6,13 @@ use App\Http\Requests\RecoverPasswordRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class PasswordResetController extends Controller
 {
-	public function submitForgetPasswordForm(ResetPasswordRequest $request)
+	public function submitForgetPasswordForm(ResetPasswordRequest $request): JsonResponse
 	{
 		$code = bin2hex(random_bytes(32));
 		DB::table('password_resets')->insert([
@@ -27,7 +28,7 @@ class PasswordResetController extends Controller
 		return response()->json('Email sent!', 200);
 	}
 
-	public function submitResetPasswordForm(RecoverPasswordRequest $request)
+	public function submitResetPasswordForm(RecoverPasswordRequest $request): JsonResponse
 	{
 		$checkToken = DB::table('password_resets')->where([
 			'token'=> $request->token['id'],

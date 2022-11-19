@@ -4,34 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddMovieRequest;
 use App\Models\Movie;
+use Illuminate\Http\JsonResponse;
 
 class MovieController extends Controller
 {
-	public function index()
+	public function index(): JsonResponse
 	{
 		return response()->json(Movie::all(), 200);
 	}
 
-	
-	public function show($id)
+	public function show($userId): JsonResponse
 	{
-		return response()->json(Movie::where('user_id', $id)->get(), 200);
+		return response()->json(Movie::where('user_id', $userId)->get(), 200);
 	}
 
-
-	public function create(AddMovieRequest $request, Movie $movie)
+	public function create(AddMovieRequest $request, Movie $movie): JsonResponse
 	{
 		$this->updateOrCreateMovie($request, $movie);
 		return response()->json('Movie added successfully!', 200);
 	}
 
-	public function destroy($id)
+	public function destroy(Movie $movie): JsonResponse
 	{
-		Movie::where('id', $id)->delete();
+		$movie->delete();
 		return response()->json('Successfully deleted!', 200);
 	}
 
-	public function update(AddMovieRequest $request, Movie $movie)
+	public function update(AddMovieRequest $request, Movie $movie): JsonResponse
 	{
 		$movie = $movie->where('id', $request->id)->first();
 		$this->updateOrCreateMovie($request, $movie);

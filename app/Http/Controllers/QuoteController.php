@@ -4,39 +4,40 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddQuoteRequest;
 use App\Models\Quote;
+use Illuminate\Http\JsonResponse;
 
 class QuoteController extends Controller
 {
-	public function index($id)
+	public function index($movieId): JsonResponse
 	{
-		$quoteList = Quote::where('movie_id', $id)->get();
+		$quoteList = Quote::where('movie_id', $movieId)->get();
 		return response()->json($quoteList, 200);
 	}
 
-	public function getQuotesForNewsFeed()
+	public function getQuotesForNewsFeed(): JsonResponse
 	{
 		return response()->json(Quote::latest()->get(), 200);
 	}
 
-	public function show(Quote $id)
+	public function show(Quote $quote): JsonResponse
 	{
-		return response()->json($id, 200);
+		return response()->json($quote, 200);
 	}
 
-	public function destroy(Quote $id)
+	public function destroy(Quote $quote): JsonResponse
 	{
-		$id->delete();
+		$quote->delete();
 		return response()->json('Successfully deleted1!', 200);
 	}
 
-	public function update(AddQuoteRequest $request)
+	public function update(AddQuoteRequest $request): JsonResponse
 	{
 		$quote = Quote::where('id', $request->quote_id)->first();
 		$this->updateOrCreateQuote($request, $quote);
 		return response()->json('Successfully updated!', 200);
 	}
 
-	public function create(AddQuoteRequest $request, Quote $quote)
+	public function create(AddQuoteRequest $request, Quote $quote): JsonResponse
 	{
 		$this->updateOrCreateQuote($request, $quote);
 		return response()->json(['message'=>'Quote added successfully!', 'attributes'=> $quote->latest()->get()], 200);

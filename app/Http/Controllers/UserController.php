@@ -4,30 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateProfileRequest;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-
-	public function index()
+	public function index(): JsonResponse
 	{
 		return response()->json(User::get(), 200);
 	}
 
-	public function getGoogleUser($id)
+	public function getGoogleUser($id): JsonResponse
 	{
 		return response()->json(User::where('id', $id)->first(), 200);
 	}
 
-	
-	public function userData()
+	public function userData(): JsonResponse
 	{
 		return response()->json(auth()->user(), 200);
 	}
 
-	public function update(UpdateProfileRequest $request)
+	public function update(UpdateProfileRequest $request): JsonResponse
 	{
 		$data = $request->validated();
 		$email = auth()->user()->email;
@@ -68,7 +67,7 @@ class UserController extends Controller
 		return response()->json($data, 200);
 	}
 
-	public function submitChangeEmail(Request $request)
+	public function submitChangeEmail(Request $request): JsonResponse
 	{
 		if ($request->email)
 		{

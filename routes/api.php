@@ -50,29 +50,29 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::controller(MovieController::class)->group(function () {
 	Route::get('movies', 'index')->name('movies.index');
-	Route::get('movies/{id}', 'show')->name('movies.show');
+	Route::get('movies/{userId}', 'show')->name('movies.show');
 	Route::post('movies', 'create')->name('movie.create');
 	Route::post('update-movie', 'update')->name('movie.update');
-	Route::delete('movies/{id}', 'destroy')->name('movie.delete');
+	Route::delete('movies/{movie}', 'destroy')->name('movie.delete');
 });
 
 Route::controller(QuoteController::class)->group(function () {
-	Route::get('quotes/{id}', 'index')->name('quotes.index');
-	Route::get('quote/{id}', 'show')->name('quote.show');
+	Route::get('quotes/{movieId}', 'index')->name('quotes.index');
+	Route::get('quote/{quote}', 'show')->name('quote.show');
 	Route::post('quotes', 'create')->name('quotes.create');
 	Route::post('update-quote', 'update')->name('quote.update');
-	Route::delete('quotes/{id}', 'destroy')->name('quotes.delete');
+	Route::delete('quotes/{quote}', 'destroy')->name('quotes.delete');
 	Route::get('quotes', 'getQuotesForNewsFeed')->name('quotes.getQuotes');
 });
 
 Route::controller(CommentController::class)->group(function () {
 	Route::get('comments', 'index')->name('comments.index');
-	Route::get('comments/{id}', 'show')->name('comments.show');
+	Route::get('comments/{quoteId}', 'show')->name('comments.show');
 	Route::post('comments', 'create')->name('comments.create');
 });
 
 Route::controller(LikeController::class)->group(function () {
 	Route::get('likes', 'index')->name('likes.getLikes');
 	Route::post('likes', 'create')->name('likes.create');
-	Route::get('likes/{id}', 'show')->name('likes.show');
+	Route::get('likes/{quoteId}', 'show')->name('likes.show');
 });

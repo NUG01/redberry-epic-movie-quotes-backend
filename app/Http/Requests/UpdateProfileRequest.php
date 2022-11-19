@@ -15,10 +15,10 @@ class UpdateProfileRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'name'                 => ['required','string','min:3', 'max:15', Rule::unique('users')->ignore(auth()->user()->id, 'id')],
-			'email'                => ['required','email', Rule::unique('users')->ignore(auth()->user()->id, 'id')],
-			'password'             => ['required','min:8', 'max:15'],
-			'thumbnail'            => ['required','image'],
+			'name'                 => ['required', 'string', 'min:3', 'max:15', Rule::unique('users')->ignore(auth()->user()->id, 'id')],
+			'email'                => ['required', 'email', Rule::unique('users')->ignore(auth()->user()->id, 'id')],
+			'password'             => ['required', 'min:8', 'max:15'],
+			'thumbnail'            => ['required', 'image'],
 		];
 	}
 }
