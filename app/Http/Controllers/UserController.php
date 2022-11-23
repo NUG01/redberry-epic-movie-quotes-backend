@@ -21,16 +21,16 @@ class UserController extends Controller
 		return response()->json(User::where('id', $id)->first(), 200);
 	}
 
-	public function userData(): JsonResponse
+	public function user(): JsonResponse
 	{
-		return response()->json(auth()->user(), 200);
+		return response()->json(['message' => 'authenticated successfully', 'user' => jwtUser()], 200);
 	}
 
 	public function update(UpdateProfileRequest $request): JsonResponse
 	{
 		$data = $request->validated();
-		$email = auth()->user()->email;
-		$currentThumbnail = auth()->user()->thumbnail;
+		$email = jwtUser()->email;
+		$currentThumbnail = jwtUser()->thumbnail;
 		$thumbnail = $request->file('thumbnail')->store('images');
 
 		if ($request->password)
@@ -38,7 +38,7 @@ class UserController extends Controller
 			$data['password'] = bcrypt($data['password']);
 		}
 
-		$code = auth()->user()->verification_code;
+		$code = jwtUser()->verification_code;
 
 		if ($request->email != $email && $request->email)
 		{

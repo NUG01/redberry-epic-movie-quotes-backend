@@ -27,7 +27,7 @@ Route::get('email-verification', [EmailVerificationController::class, 'verifyUse
 Route::controller(UserController::class)->group(function () {
 	Route::get('users', 'index')->name('users.index');
 	Route::get('user/{id}', 'getGoogleUser')->name('users.googleUser');
-	Route::get('auth-user', 'userData')->name('user.data');
+	Route::get('user', 'user')->name('user.get');
 	Route::post('update-profile', 'update')->name('update.profile');
 	Route::post('update-email', 'submitChangeEmail')->name('update.email');
 });
@@ -39,7 +39,7 @@ Route::controller(PasswordResetController::class)->group(function () {
 
 Route::controller(OAuthController::class)->group(function () {
 	Route::get('auth/google/redirect', 'redirect')->middleware('web')->name('google.redirect');
-	Route::get('auth/google/callback', 'callback')->middleware('web')->name('google.callback');
+	Route::get('auth/google/callback', 'callback')->name('google.callback');
 });
 
 Route::controller(AuthController::class)->group(function () {
@@ -54,6 +54,8 @@ Route::controller(MovieController::class)->group(function () {
 	Route::post('movies', 'create')->name('movie.create');
 	Route::post('update-movie', 'update')->name('movie.update');
 	Route::delete('movies/{movie}', 'destroy')->name('movie.delete');
+	Route::get('movie/{movieId}', 'getMovie')->name('movie.get');
+	Route::get('genres', 'getGenres')->name('genres.get');
 });
 
 Route::controller(QuoteController::class)->group(function () {

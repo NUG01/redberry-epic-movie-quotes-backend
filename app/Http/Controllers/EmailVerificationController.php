@@ -46,7 +46,7 @@ class EmailVerificationController extends Controller
 		{
 			$user->is_verified = 1;
 			$user->save();
-			return redirect(env('FRONTEND_URL') . '/landing/email-verified');
+			return redirect(env('FRONTEND_URL_FOR_CONFIRM') . '/landing/email-verified');
 		}
 		else
 		{

@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Firebase\JWT\JWT;
+use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
-	public function register(RegisterRequest $request)
+	public function register(RegisterRequest $request): JsonResponse
 	{
 		$user = User::create([
 			'name'              => $request->name,
@@ -25,7 +28,7 @@ class AuthController extends Controller
 		return response()->json('Registration is successful!', 200);
 	}
 
-	public function login(LoginRequest $request)
+	public function login(LoginRequest $request): JsonResponse
 	{
 		$username = $request->name;
 		$password = $request->password;
@@ -33,20 +36,24 @@ class AuthController extends Controller
 		$token = auth()->attempt([$usernameType=>$username, 'password'=>$password]);
 		if (!$token)
 		{
-			return response()->json(['error' => 'User Does not exist!'], 404);
+			return response()->json(['error' => 'User Does not exist!'], 401);
 		}
 
-		return response()->json([
-			'access_token'=> $token,
-			'token_type'  => 'bearer',
-			'expires_in'  => auth()->factory()->getTTL() * 60,
-			'userData'    => auth()->user(),
-		]);
+		$payload = [
+			'exp' => Carbon::now()->addMinutes(30)->timestamp,
+			'uid' => User::where($usernameType, $username)->first()->id,
+		];
+
+		$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
+
+		$cookie = cookie('access_token', $jwt, 30, '/', env('FRONTEND_URL'), true, true, false, 'Strict');
+		return response()->json('success', 200)->cookie($cookie);
 	}
 
-	public function logout()
+	public function logout(): JsonResponse
 	{
-		auth()->logout();
-		return response()->json(['message' => 'Successfully logged out']);
+		$cookie = cookie('access_token', '', 0, '/', env('FRONTEND_URL'), true, true, false, 'Strict');
+
+		return response()->json(['message' => 'Successfully logged out'], 200)->withCookie($cookie);
 	}
 }
