@@ -36,7 +36,7 @@ class AuthController extends Controller
 		$token = auth()->attempt([$usernameType=>$username, 'password'=>$password]);
 		if (!$token)
 		{
-			return response()->json(['error' => 'User Does not exist!'], 401);
+			return response()->json(['error' => 'User Does not exist!'], 403);
 		}
 
 		$payload = [

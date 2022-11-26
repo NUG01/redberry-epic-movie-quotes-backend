@@ -12,18 +12,18 @@ class MovieController extends Controller
 {
 	public function index(): JsonResponse
 	{
-		return response()->json(Movie::all(), 200);
+		$moviesData=Movie::with('quotes', 'user:id,name,thumbnail',)->latest()->get(); 
+		return response()->json($moviesData, 200);
 	}
 
 	public function show($userId): JsonResponse
 	{
-		return response()->json(Movie::where('user_id', $userId)->get(), 200);
+		return response()->json(Movie::where('user_id', $userId)->with('quotes')->get(), 200);
 	}
 
-	public function getMovie($movieId): JsonResponse
+	public function getMovie(Movie $movie): JsonResponse
 	{
-		$movie = Movie::where('id', $movieId)->first();
-		return response()->json(['movie'=>$movie, 'genres'=>$movie->genres], 200);
+		return response()->json(['movie'=>$movie, 'genres'=>$movie->genres, 'quotes'=>$movie->quotes], 200);
 	}
 
 	public function getGenres(): JsonResponse

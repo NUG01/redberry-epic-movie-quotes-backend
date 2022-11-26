@@ -13,4 +13,3 @@
 
 // use Illuminate\Routing\Route;
 
-// Route::view('/', 'welcome');

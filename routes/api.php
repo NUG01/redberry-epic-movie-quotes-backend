@@ -25,7 +25,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('email-verification', [EmailVerificationController::class, 'verifyUser'])->name('verification.verify');
 
 Route::controller(UserController::class)->group(function () {
-	Route::get('users', 'index')->name('users.index');
 	Route::get('user/{id}', 'getGoogleUser')->name('users.googleUser');
 	Route::get('user', 'user')->name('user.get');
 	Route::post('update-profile', 'update')->name('update.profile');
@@ -54,7 +53,7 @@ Route::controller(MovieController::class)->group(function () {
 	Route::post('movies', 'create')->name('movie.create');
 	Route::post('update-movie', 'update')->name('movie.update');
 	Route::delete('movies/{movie}', 'destroy')->name('movie.delete');
-	Route::get('movie/{movieId}', 'getMovie')->name('movie.get');
+	Route::get('movie/{movie}', 'getMovie')->name('movie.get');
 	Route::get('genres', 'getGenres')->name('genres.get');
 });
 
@@ -71,10 +70,12 @@ Route::controller(CommentController::class)->group(function () {
 	Route::get('comments', 'index')->name('comments.index');
 	Route::get('comments/{quoteId}', 'show')->name('comments.show');
 	Route::post('comments', 'create')->name('comments.create');
+	Route::get('notifications/{userId}/comments', 'getUserComments')->name('comments.notificationComments');
 });
 
 Route::controller(LikeController::class)->group(function () {
 	Route::get('likes', 'index')->name('likes.getLikes');
 	Route::post('likes', 'create')->name('likes.create');
 	Route::get('likes/{quoteId}', 'show')->name('likes.show');
+	Route::get('notifications/{userId}/likes', 'getUserLikes')->name('likes.notificationLikes');
 });

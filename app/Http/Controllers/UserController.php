@@ -11,10 +11,6 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-	public function index(): JsonResponse
-	{
-		return response()->json(User::get(), 200);
-	}
 
 	public function getGoogleUser($id): JsonResponse
 	{

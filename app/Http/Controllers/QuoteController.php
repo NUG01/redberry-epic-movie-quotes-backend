@@ -16,7 +16,8 @@ class QuoteController extends Controller
 
 	public function getQuotesForNewsFeed(): JsonResponse
 	{
-		return response()->json(Quote::latest()->get(), 200);
+		$quotesData=Quote::with('comments', 'likes')->latest()->get();
+		return response()->json($quotesData, 200);
 	}
 
 	public function show(Quote $quote): JsonResponse
