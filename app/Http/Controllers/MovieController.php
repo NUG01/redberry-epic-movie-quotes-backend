@@ -5,25 +5,22 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddMovieRequest;
 use App\Models\Genre;
 use App\Models\Movie;
+use App\Models\Quote;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class MovieController extends Controller
 {
-	public function index(): JsonResponse
-	{
-		$moviesData=Movie::with('quotes', 'user:id,name,thumbnail',)->latest()->get(); 
-		return response()->json($moviesData, 200);
-	}
 
-	public function show($userId): JsonResponse
+	public function index($userId): JsonResponse
 	{
 		return response()->json(Movie::where('user_id', $userId)->with('quotes')->get(), 200);
 	}
 
 	public function getMovie(Movie $movie): JsonResponse
 	{
-		return response()->json(['movie'=>$movie, 'genres'=>$movie->genres, 'quotes'=>$movie->quotes], 200);
+		$quotesData=Quote::where('movie_id', $movie->id)->with('likes', 'comments')->get();
+		return response()->json(['movie'=>$movie, 'genres'=>$movie->genres, 'quotes'=>$quotesData,], 200);
 	}
 
 	public function getGenres(): JsonResponse

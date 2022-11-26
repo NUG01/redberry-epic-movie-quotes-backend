@@ -11,12 +11,8 @@ use Illuminate\Http\JsonResponse;
 
 class CommentController extends Controller
 {
-	public function index(): JsonResponse
-	{
-		return response()->json(Comment::with('user:id,name,thumbnail',)->get(), 200);
-	}
 
-	public function show($quoteId): JsonResponse
+	public function index($quoteId): JsonResponse
 	{
 		$commentList = Comment::where('quote_id', $quoteId)->with('user:id,name,thumbnail')->get();
 		return response()->json($commentList, 200);

@@ -11,12 +11,8 @@ use Illuminate\Http\JsonResponse;
 
 class LikeController extends Controller
 {
-	public function index(): JsonResponse
-	{
-		return response()->json(Like::all(), 200);
-	}
 
-	public function show($quoteId): JsonResponse
+	public function index($quoteId): JsonResponse
 	{
 		$quoteLikes = Like::where('quote_id', $quoteId)->get();
 		return response()->json($quoteLikes, 200);

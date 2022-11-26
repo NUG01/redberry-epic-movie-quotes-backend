@@ -3,26 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddQuoteRequest;
+use App\Models\Comment;
+use App\Models\Like;
 use App\Models\Quote;
 use Illuminate\Http\JsonResponse;
 
 class QuoteController extends Controller
 {
+	public function getQuotesForNewsFeed(): JsonResponse
+	{
+		$quotesData=Quote::with('comments','comments.user:id,name,thumbnail', 'likes', 'user:id,name,thumbnail', 'movie:id,name')->latest()->get();
+		return response()->json($quotesData, 200);
+	}
+
+
 	public function index($movieId): JsonResponse
 	{
 		$quoteList = Quote::where('movie_id', $movieId)->get();
 		return response()->json($quoteList, 200);
 	}
 
-	public function getQuotesForNewsFeed(): JsonResponse
-	{
-		$quotesData=Quote::with('comments', 'likes')->latest()->get();
-		return response()->json($quotesData, 200);
-	}
 
 	public function show(Quote $quote): JsonResponse
 	{
-		return response()->json($quote, 200);
+		$commentsData=Comment::where('quote_id', $quote->id)->with('user:id,name,thumbnail')->get();
+		return response()->json(['quote'=>$quote, 'comments'=> $commentsData, 'likes'=>$quote->likes], 200);
 	}
 
 	public function destroy(Quote $quote): JsonResponse

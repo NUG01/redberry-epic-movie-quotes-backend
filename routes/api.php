@@ -25,8 +25,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('email-verification', [EmailVerificationController::class, 'verifyUser'])->name('verification.verify');
 
 Route::controller(UserController::class)->group(function () {
-	Route::get('user/{id}', 'getGoogleUser')->name('users.googleUser');
 	Route::get('user', 'user')->name('user.get');
+	Route::get('user/{id}', 'getGoogleUser')->name('users.googleUser');
 	Route::post('update-profile', 'update')->name('update.profile');
 	Route::post('update-email', 'submitChangeEmail')->name('update.email');
 });
@@ -48,8 +48,7 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::controller(MovieController::class)->group(function () {
-	Route::get('movies', 'index')->name('movies.index');
-	Route::get('movies/{userId}', 'show')->name('movies.show');
+	Route::get('movies/{userId}', 'index')->name('movies.index');
 	Route::post('movies', 'create')->name('movie.create');
 	Route::post('update-movie', 'update')->name('movie.update');
 	Route::delete('movies/{movie}', 'destroy')->name('movie.delete');
@@ -60,22 +59,20 @@ Route::controller(MovieController::class)->group(function () {
 Route::controller(QuoteController::class)->group(function () {
 	Route::get('quotes/{movieId}', 'index')->name('quotes.index');
 	Route::get('quote/{quote}', 'show')->name('quote.show');
+	Route::get('quotes', 'getQuotesForNewsFeed')->name('quotes.getQuotes');
 	Route::post('quotes', 'create')->name('quotes.create');
 	Route::post('update-quote', 'update')->name('quote.update');
 	Route::delete('quotes/{quote}', 'destroy')->name('quotes.delete');
-	Route::get('quotes', 'getQuotesForNewsFeed')->name('quotes.getQuotes');
 });
 
 Route::controller(CommentController::class)->group(function () {
-	Route::get('comments', 'index')->name('comments.index');
-	Route::get('comments/{quoteId}', 'show')->name('comments.show');
+	Route::get('comments/{quoteId}', 'index')->name('comments.index');
 	Route::post('comments', 'create')->name('comments.create');
-	Route::get('notifications/{userId}/comments', 'getUserComments')->name('comments.notificationComments');
+	Route::get('notifications/{userId}/comments', 'getUserComments')->name('notifications.comments');
 });
 
 Route::controller(LikeController::class)->group(function () {
-	Route::get('likes', 'index')->name('likes.getLikes');
+	Route::get('likes/{quoteId}', 'index')->name('likes.index');
 	Route::post('likes', 'create')->name('likes.create');
-	Route::get('likes/{quoteId}', 'show')->name('likes.show');
-	Route::get('notifications/{userId}/likes', 'getUserLikes')->name('likes.notificationLikes');
+	Route::get('notifications/{userId}/likes', 'getUserLikes')->name('notifications.likes');
 });
