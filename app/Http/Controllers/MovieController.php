@@ -12,20 +12,15 @@ use Illuminate\Support\Facades\DB;
 class MovieController extends Controller
 {
 
-	public function index($userId): JsonResponse
+	public function index($user): JsonResponse
 	{
-		return response()->json(Movie::where('user_id', $userId)->with('quotes')->get(), 200);
+		return response()->json(Movie::where('user_id', $user)->with('quotes')->get(), 200);
 	}
 
-	public function getMovie(Movie $movie): JsonResponse
+	public function show(Movie $movie): JsonResponse
 	{
 		$quotesData=Quote::where('movie_id', $movie->id)->with('likes', 'comments')->get();
 		return response()->json(['movie'=>$movie, 'genres'=>$movie->genres, 'quotes'=>$quotesData,], 200);
-	}
-
-	public function getGenres(): JsonResponse
-	{
-		return response()->json(Genre::all(), 200);
 	}
 
 	public function create(AddMovieRequest $request, Movie $movie)

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\NotificationStatusUpdated;
 use App\Http\Requests\AddCommentRequest;
 use App\Models\Comment;
+use App\Models\Notification;
 use App\Models\Quote;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -12,30 +13,27 @@ use Illuminate\Http\JsonResponse;
 class CommentController extends Controller
 {
 
-	public function index($quoteId): JsonResponse
+	public function index($quote): JsonResponse
 	{
-		$commentList = Comment::where('quote_id', $quoteId)->with('user:id,name,thumbnail')->get();
+		$commentList = Comment::where('quote_id', $quote)->with('user:id,name,thumbnail')->get();
 		return response()->json($commentList, 200);
 	}
 
-	public function getUserComments($userId): JsonResponse
+	public function create(AddCommentRequest $request, Notification $notification): JsonResponse
 	{
-		$quotesData=Quote::where('user_id', $userId)->pluck('id');
-		$commentsData=Comment::whereIn('quote_id', $quotesData)->with('user:id,name,thumbnail')->get();
-		return response()->json($commentsData, 200);
-	}
-
-	public function create(AddCommentRequest $request): JsonResponse
-	{
-		Comment::create([
+		$comment=Comment::create([
 			'body'     => $request->body,
 			'quote_id' => $request->quote_id,
 			'user_id'  => $request->user_id,
 		]);
+		$notification->body=$request->body;
+		$notification->quote_id=$request->quote_id;
+		$notification->user_id=$request->user_id;
+		$notification->save();
 		$user=User::find($request->user_id);
-		$userData=['name'=>$user->name, 'thumbnail'=> $user->thumbnail];
-		$comment = Comment::latest()->first();
-		event(new NotificationStatusUpdated(['data'=>$comment, 'user'=>$userData, 'quoteAuthor'=>$comment->quote->user_id]));
+		$userData=['id'=>$user->id,'name'=>$user->name, 'thumbnail'=> $user->thumbnail];
+		$notification = Notification::latest()->first();
+		event(new NotificationStatusUpdated(['data'=>$notification, 'user'=>$userData, 'quoteAuthor'=>$notification->quote->user_id]));
 
 		return response()->json('Comment added successfully!', 200);
 	}

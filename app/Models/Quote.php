@@ -35,4 +35,9 @@ class Quote extends Model
 	{
 		return	$this->hasMany(Like::class);
 	}
+
+	public function notifications(): HasMany
+	{
+		return	$this->hasMany(Notification::class);
+	}
 }

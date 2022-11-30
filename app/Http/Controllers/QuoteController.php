@@ -10,21 +10,26 @@ use Illuminate\Http\JsonResponse;
 
 class QuoteController extends Controller
 {
-	public function getQuotesForNewsFeed(): JsonResponse
+	
+	public function index(): JsonResponse
 	{
 		$quotesData=Quote::with('comments','comments.user:id,name,thumbnail', 'likes', 'user:id,name,thumbnail', 'movie:id,name')->latest()->get();
 		return response()->json($quotesData, 200);
 	}
 
-
-	public function index($movieId): JsonResponse
+	
+	public function show($movie): JsonResponse
 	{
-		$quoteList = Quote::where('movie_id', $movieId)->get();
+		$quoteList = Quote::where('movie_id', $movie)->with('likes', 'comments')->get();
 		return response()->json($quoteList, 200);
 	}
 
 
-	public function show(Quote $quote): JsonResponse
+
+
+
+
+	public function quoteDetails(Quote $quote): JsonResponse
 	{
 		$commentsData=Comment::where('quote_id', $quote->id)->with('user:id,name,thumbnail')->get();
 		return response()->json(['quote'=>$quote, 'comments'=> $commentsData, 'likes'=>$quote->likes], 200);
@@ -33,7 +38,7 @@ class QuoteController extends Controller
 	public function destroy(Quote $quote): JsonResponse
 	{
 		$quote->delete();
-		return response()->json('Successfully deleted1!', 200);
+		return response()->json('Successfully deleted!', 200);
 	}
 
 	public function update(AddQuoteRequest $request): JsonResponse
@@ -46,7 +51,8 @@ class QuoteController extends Controller
 	public function create(AddQuoteRequest $request, Quote $quote): JsonResponse
 	{
 		$this->updateOrCreateQuote($request, $quote);
-		return response()->json(['message'=>'Quote added successfully!', 'attributes'=> $quote->latest()->get()], 200);
+		$quotesData=Quote::with('comments','comments.user:id,name,thumbnail', 'likes', 'user:id,name,thumbnail', 'movie:id,name')->latest()->get();
+		return response()->json(['message'=>'Quote added successfully!', 'attributes'=> $quotesData], 200);
 	}
 
 	private function updateOrCreateQuote($request, $quote)

@@ -38,7 +38,7 @@ class UserController extends Controller
 
 		if ($request->email != $email && $request->email)
 		{
-			$url = env('FRONTEND_URL') . '/update-email/' . $code . '?email=' . $request->email;
+			$url = env('FRONTEND_URL') . '/user/email/' . $code . '?email=' . $request->email;
 			$body = 'You asked for Email change? then change it.';
 			$buttonText = 'Change email';
 			EmailVerificationController::sendVerifyEmail($request->email, $code, 'Change Email', 'emails.reset', $body, $buttonText, $url);

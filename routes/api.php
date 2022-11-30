@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\GenreController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\OAuthController;
@@ -22,13 +24,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('email-verification', [EmailVerificationController::class, 'verifyUser'])->name('verification.verify');
 
 Route::controller(UserController::class)->group(function () {
 	Route::get('user', 'user')->name('user.get');
 	Route::get('user/{id}', 'getGoogleUser')->name('users.googleUser');
-	Route::post('update-profile', 'update')->name('update.profile');
-	Route::post('update-email', 'submitChangeEmail')->name('update.email');
+	Route::post('user/profile', 'update')->name('update.profile');
+	Route::post('user/email', 'submitChangeEmail')->name('update.email');
 });
 
 Route::controller(PasswordResetController::class)->group(function () {
@@ -48,31 +49,40 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::controller(MovieController::class)->group(function () {
-	Route::get('movies/{userId}', 'index')->name('movies.index');
-	Route::post('movies', 'create')->name('movie.create');
-	Route::post('update-movie', 'update')->name('movie.update');
-	Route::delete('movies/{movie}', 'destroy')->name('movie.delete');
-	Route::get('movie/{movie}', 'getMovie')->name('movie.get');
-	Route::get('genres', 'getGenres')->name('genres.get');
+	Route::get('movies/{user:id}', 'index')->name('movies.index');
+	Route::get('movies/{movie:id}/details', 'show')->name('movies.get');
+	Route::post('movies/create', 'create')->name('movies.create');
+	Route::post('movies', 'update')->name('movies.update');
+	Route::delete('movies/{movie:id}', 'destroy')->name('movies.delete');
 });
 
 Route::controller(QuoteController::class)->group(function () {
-	Route::get('quotes/{movieId}', 'index')->name('quotes.index');
-	Route::get('quote/{quote}', 'show')->name('quote.show');
-	Route::get('quotes', 'getQuotesForNewsFeed')->name('quotes.getQuotes');
-	Route::post('quotes', 'create')->name('quotes.create');
-	Route::post('update-quote', 'update')->name('quote.update');
-	Route::delete('quotes/{quote}', 'destroy')->name('quotes.delete');
+	Route::get('quotes', 'index')->name('quotes.index');
+	Route::get('quotes/{movie:id}', 'show')->name('quotes.show');
+	Route::get('quotes/{quote:id}/details', 'quoteDetails')->name('quotes.details');
+	Route::post('quotes/create', 'create')->name('quotes.create');
+	Route::post('quotes', 'update')->name('quotes.update');
+	Route::delete('quotes/{quote:id}', 'destroy')->name('quotes.delete');
 });
 
 Route::controller(CommentController::class)->group(function () {
-	Route::get('comments/{quoteId}', 'index')->name('comments.index');
+	Route::get('comments/{quote:id}', 'index')->name('comments.index');
 	Route::post('comments', 'create')->name('comments.create');
-	Route::get('notifications/{userId}/comments', 'getUserComments')->name('notifications.comments');
 });
 
 Route::controller(LikeController::class)->group(function () {
-	Route::get('likes/{quoteId}', 'index')->name('likes.index');
+	Route::get('likes/{quote:id}', 'index')->name('likes.index');
 	Route::post('likes', 'create')->name('likes.create');
-	Route::get('notifications/{userId}/likes', 'getUserLikes')->name('notifications.likes');
+});
+
+Route::controller(NotificationController::class)->group(function () {
+	Route::get('notifications/{user:id}', 'index')->name('notifications.index');
+});
+
+Route::controller(GenreController::class)->group(function () {
+	Route::get('genres', 'index')->name('genres.index');
+});
+
+Route::controller(EmailVerificationController::class)->group(function () {
+	Route::get('email-verification', 'verifyUser')->name('verification.verify');
 });
