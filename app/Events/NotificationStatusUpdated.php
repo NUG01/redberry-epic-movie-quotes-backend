@@ -29,6 +29,12 @@ class NotificationStatusUpdated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('notifications.' . $this->notification['quoteAuthor']);
+        // return new PrivateChannel('notifications.' . $this->notification['quoteAuthor']);
+        return new PrivateChannel('private-notifications.' . $this->notification['quoteAuthor']);
     }
+
+//     public function broadcastAs()
+// {
+//     return 'NotificationStatusUpdated';
+// }
 }

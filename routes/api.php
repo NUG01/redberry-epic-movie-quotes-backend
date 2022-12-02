@@ -11,6 +11,7 @@ use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -88,3 +89,6 @@ Route::controller(GenreController::class)->group(function () {
 Route::controller(EmailVerificationController::class)->group(function () {
 	Route::get('email-verification', 'verifyUser')->name('verification.verify');
 });
+
+// Broadcast::routes(['middleware' => ['jwt.auth']]);
+// Broadcast::routes(['prefix'=> 'api', 'middleware' => ['jwt.auth']]);
