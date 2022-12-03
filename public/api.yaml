@@ -1,25 +1,34 @@
 openapi: 3.0.0
 info:
-  title: Coronatime API
-  description: Here goes description
+  title: Movie Quotes API
+  description: Movie Quotes helps people to share interesting movie quotes with each other
   version: 0.1.9
 
 servers:
-  - url: http://localhost:8000/api
+  - url: http://127.0.0.1:8000/api
     description: local server
-  - url: http://producation.app/api
+  - url: http://production.app/api
     description: production server
 
+
+
 paths:
-  /users:
-    get:
-      summary: Returns a list of users.
-      responses:
-        '200': 
-          description: A JSON array of user names
-          content:
-            application/json:
-              schema: 
-                type: array
-                items: 
-                  type: string
+ /user:
+    $ref: "./_swagger/paths/user.yaml#/paths/~1user"
+#  /user/profile: 
+#     $ref: "./_swagger/paths/user.yaml#/paths/~1user~1profile"
+
+
+# paths:
+#   /users:
+#     get:
+#       summary: Returns a list of users.
+#       responses:
+#         '200': 
+#           description: A JSON array of user names
+#           content:
+#             application/json:
+#               schema: 
+#                 type: array
+#                 items: 
+#                   type: string

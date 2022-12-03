@@ -44,10 +44,11 @@ class AuthController extends Controller
 			'uid' => User::where($usernameType, $username)->first()->id,
 		];
 
+		
 		$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
-
+		
 		$cookie = cookie('access_token', $jwt, 30, '/', env('FRONTEND_URL'), true, true, false, 'Strict');
-		return response()->json('success', 200)->cookie($cookie);
+		return response()->json('success', 200)->withCookie($cookie);
 	}
 
 	public function logout(): JsonResponse

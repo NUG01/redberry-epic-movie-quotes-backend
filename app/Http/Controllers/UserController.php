@@ -21,12 +21,20 @@ class UserController extends Controller
 
 	public function user(): JsonResponse
 	{
-		if(jwtUser() && jwtUser()->google_id==null){
-			$user=User::where('id', jwtUser()->id)->with('emails')->first();
+		$user=jwtUser();
+		if($user){
+			$userData=[
+				'id'=>$user->id,
+				'name'=>$user->name,
+				'email'=>$user->email,
+				'thumbnail'=>$user->thumbnail,
+				'google_id'=>$user->google_id,
+				'emails'=>$user->emails,
+			];
     }else{
-			$user=jwtUser();
+			$userData=null;
 		}
-		return response()->json(['message' => 'authenticated successfully', 'user' => $user], 200);
+		return response()->json(['message' => 'authenticated successfully', 'user' => $userData], 200);
 	}
 
 	public function update(UpdateProfileRequest $request): JsonResponse
