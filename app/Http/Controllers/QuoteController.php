@@ -13,7 +13,7 @@ class QuoteController extends Controller
 	
 	public function index(): JsonResponse
 	{
-		$quotesData=Quote::with('comments','comments.user:id,name,thumbnail', 'likes', 'user:id,name,thumbnail', 'movie:id,name')->latest()->get();
+		$quotesData=Quote::orderBy('id', 'DESC')->with('comments','comments.user:id,name,thumbnail', 'likes', 'user:id,name,thumbnail', 'movie:id,name')->paginate(5);
 		return response()->json($quotesData, 200);
 	}
 
