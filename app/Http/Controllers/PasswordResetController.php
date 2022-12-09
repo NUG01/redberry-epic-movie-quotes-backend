@@ -21,7 +21,7 @@ class PasswordResetController extends Controller
 			'created_at'=> Carbon::now(),
 		]);
 
-		$url = env('FRONTEND_URL') . '/landing/recover-password/' . $code . '?email=' . $request->email;
+		$url = env('FRONTEND_URL_FOR_CONFIRM') . '/landing/recover-password/' . $code . '?email=' . $request->email;
 		$body = 'Forgot password? No worries, you can recover it easily.';
 		$buttonText = 'Recover password';
 		EmailVerificationController::sendVerifyEMail($request->email, $code, 'Reset Password', 'emails.reset', $body, $buttonText, $url);

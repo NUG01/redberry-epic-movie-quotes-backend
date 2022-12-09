@@ -6,6 +6,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Firebase\JWT\JWT;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
 
 class OAuthController extends Controller
@@ -18,6 +19,9 @@ class OAuthController extends Controller
 	public function callback(): RedirectResponse
 	{
 		$googleUser = Socialite::driver('google')->stateless()->user();
+		if(User::where('email', $googleUser->email)->where('google_id', null)->first()){
+			return redirect(env('FRONTEND_URL_FOR_CONFIRM') . '/landing');
+		};
 		$user = User::updateOrCreate(
 			[
 				'google_id' => $googleUser->id,

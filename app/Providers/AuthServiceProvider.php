@@ -5,9 +5,10 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\Gate;
 
 use App\Models\User;
-use Exception;
+use App\Services\Auth\JwtGuard;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,25 +30,20 @@ class AuthServiceProvider extends ServiceProvider
 	 */
 	public function boot()
 	{
-		$this->registerPolicies();
+			$this->registerPolicies();
+			Auth::extend('broadcast-token', function ($app, $name, array $config) {
+				// Return an instance of Illuminate\Contracts\Auth\Guard...
 
-		// if (!request()->cookie('access_token') && !request()->header('Authorization'))
-		// {
-		// 	return null;
-		// }
-		Auth::extend('broadcast', function ($app, $name, array $config) {
-			return new JwtGuard(Auth::createUserProvider($config['provider']));
-		// 		$decoded = JWT::decode(
-		// 	request()->cookie('access_token') ?? substr(request()->header('Authorization'), 7),
-		// 	new Key(config('auth.jwt_secret'), 'HS256')
-		// );
-		// return User::find($decoded->uid);
-	});
+				return new JwtGuard(Auth::createUserProvider($config['provider']));
+		});
 
-		// $decoded = JWT::decode(
-		// 	request()->cookie('access_token') ?? substr(request()->header('Authorization'), 7),
-		// 	new Key(config('auth.jwt_secret'), 'HS256')
-		// );
-		// return User::find($decoded->uid);
+			return User::find(1);
+			Auth::viaRequest('broadcast-token', function (Request $request) {
+				$decoded = JWT::decode(
+					request()->cookie('access_token') ?? substr(request()->header('Authorization'), 7),
+					new Key(config('auth.jwt_secret'), 'HS256')
+				);
+				return User::find($decoded->uid);
+    });
 	}
 }
