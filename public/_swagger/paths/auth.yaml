@@ -1,0 +1,44 @@
+paths:
+  /register:
+    post:
+      tags:
+        - Auth
+      summary: Registers user
+      requestBody:
+        description: Register new user
+        content:
+            application/json:
+              schema:
+                $ref: "../schemas/auth.yaml#/components/schemas/register"    
+      responses:
+        '200':
+          $ref: "../responses/auth.yaml#/components/responses/register/200"
+        '403':
+          $ref: "../responses/auth.yaml#/components/responses/register/403"
+      security: []           
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: Logins user
+      requestBody:
+        description: Logins existing user
+        content:
+            application/json:
+              schema:
+                $ref: "../schemas/auth.yaml#/components/schemas/login"             
+      responses:
+        '200':
+          $ref: "../responses/auth.yaml#/components/responses/login/200"
+        '403':
+          $ref: "../responses/auth.yaml#/components/responses/login/403"
+      security: []           
+  /logout:
+    get:
+      tags:
+        - Auth
+      summary: Logouts user     
+      responses:
+        '200':
+          $ref: "../responses/auth.yaml#/components/responses/logout/200"
+                 

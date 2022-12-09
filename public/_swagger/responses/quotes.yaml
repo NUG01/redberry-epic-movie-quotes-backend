@@ -1,0 +1,302 @@
+components:
+  responses:
+    quotes:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 1  
+                movie_id:
+                  type: integer
+                  example: 1 
+                user_id:
+                  type: integer
+                  example: 4 
+                quote:
+                  type: object
+                  properties:
+                    en:
+                      type: string
+                      example: Follow the white rabbit  
+                    ka:
+                      type: string
+                      example: თეთრ კურდღელს გაეკიდე
+                thumbnail:
+                  type: string
+                  example: images/BIeBbKo2Lc6nbMfk8STZ4yjEERLrTez0dWXEnmHo.png 
+                created_at:
+                  type: string
+                  example: 2022-12-03T05:53:35.000000Z
+                updated_at:
+                  type: string
+                  example: 2022-12-03T05:53:35.000000Z 
+                comments:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1 
+                    quote_id:
+                      type: integer
+                      example: 1         
+                    user_id:
+                      type: integer
+                      example: 4       
+                    body:
+                      type: string
+                      example: Random comment  
+                    created_at:
+                      type: string
+                      example: 2022-12-03T05:53:35.000000Z
+                    updated_at:
+                      type: string
+                      example: 2022-12-03T05:53:35.000000Z   
+                    user:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 4        
+                        name:
+                          type: string
+                          example: Username 
+                        thumbnail:
+                          type: string
+                          example: images/BIeBbKo2Lc6nbMfk8STZ4yjEERLrTez0dWXEnmHo.png          
+                likes:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1 
+                    quote_id:
+                      type: integer
+                      example: 1         
+                    user_id:
+                      type: integer
+                      example: 4       
+                    created_at:
+                      type: string
+                      example: 2022-12-03T05:53:35.000000Z
+                    updated_at:
+                      type: string
+                      example: 2022-12-03T05:53:35.000000Z   
+                user:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 4        
+                    name:
+                      type: string
+                      example: Username 
+                    thumbnail:
+                      type: string
+                      example: images/BIeBbKo2Lc6nbMfk8STZ4yjEERLrTez0dWXEnmHo.png     
+                movie:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1        
+                    name:
+                      type: object
+                      properties:
+                        en:
+                          type: string
+                          example: The matrix  
+                        ka:
+                          type: string
+                          example: მატრიცა                    
+    quotes_movie:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 1  
+                movie_id:
+                  type: integer
+                  example: 1 
+                user_id:
+                  type: integer
+                  example: 4 
+                quote:
+                  type: object
+                  properties:
+                    en:
+                      type: string
+                      example: Follow the white rabbit  
+                    ka:
+                      type: string
+                      example: თეთრ კურდღელს გაეკიდე
+                thumbnail:
+                  type: string
+                  example: images/BIeBbKo2Lc6nbMfk8STZ4yjEERLrTez0dWXEnmHo.png 
+                created_at:
+                  type: string
+                  example: 2022-12-03T05:53:35.000000Z
+                updated_at:
+                  type: string
+                  example: 2022-12-03T05:53:35.000000Z  
+                comments:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1 
+                    quote_id:
+                      type: integer
+                      example: 1         
+                    user_id:
+                      type: integer
+                      example: 4       
+                    body:
+                      type: string
+                      example: Random comment  
+                    created_at:
+                      type: string
+                      example: 2022-12-03T05:53:35.000000Z
+                    updated_at:
+                      type: string
+                      example: 2022-12-03T05:53:35.000000Z         
+                likes:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1 
+                    quote_id:
+                      type: integer
+                      example: 1         
+                    user_id:
+                      type: integer
+                      example: 4       
+                    created_at:
+                      type: string
+                      example: 2022-12-03T05:53:35.000000Z
+                    updated_at:
+                      type: string
+                      example: 2022-12-03T05:53:35.000000Z
+    quotes_quote_details:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quote:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1  
+                    movie_id:
+                      type: integer
+                      example: 1 
+                    user_id:
+                      type: integer
+                      example: 4 
+                    quote:
+                      type: object
+                      properties:
+                        en:
+                          type: string
+                          example: Follow the white rabbit  
+                        ka:
+                          type: string
+                          example: თეთრ კურდღელს გაეკიდე
+                    thumbnail:
+                      type: string
+                      example: images/BIeBbKo2Lc6nbMfk8STZ4yjEERLrTez0dWXEnmHo.png 
+                    created_at:
+                      type: string
+                      example: 2022-12-03T05:53:35.000000Z
+                    updated_at:
+                      type: string
+                      example: 2022-12-03T05:53:35.000000Z 
+                comments:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1 
+                    quote_id:
+                      type: integer
+                      example: 1         
+                    user_id:
+                      type: integer
+                      example: 4       
+                    body:
+                      type: string
+                      example: Random comment  
+                    created_at:
+                      type: string
+                      example: 2022-12-03T05:53:35.000000Z
+                    updated_at:
+                      type: string
+                      example: 2022-12-03T05:53:35.000000Z   
+                    user:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 4        
+                        name:
+                          type: string
+                          example: Username 
+                        thumbnail:
+                          type: string
+                          example: images/BIeBbKo2Lc6nbMfk8STZ4yjEERLrTez0dWXEnmHo.png   
+                likes:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1 
+                    quote_id:
+                      type: integer
+                      example: 1         
+                    user_id:
+                      type: integer
+                      example: 4       
+                    created_at:
+                      type: string
+                      example: 2022-12-03T05:53:35.000000Z
+                    updated_at:
+                      type: string
+                      example: 2022-12-03T05:53:35.000000Z
+    quotes_update:
+      '200':
+        description: Successful operation
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: 'Successfully updated!'
+    quotes_create:
+      '200':
+        description: Successful operation
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: 'Quote added successfully!'
+    quotes_quote:
+      '200':
+        description: Successful operation
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: 'Successfully deleted!'

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\RegisterEmail;
 use App\Mail\VerifyEmail;
+use App\Models\Email;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -42,11 +43,16 @@ class EmailVerificationController extends Controller
 	{
 		$verificationCode = $request->code;
 		$user = User::where(['verification_code'=>$verificationCode])->first();
+		$email=Email::where(['address'=>$verificationCode])->first();
 		if ($user != null)
 		{
 			$user->is_verified = 1;
 			$user->save();
 			return redirect(env('FRONTEND_URL_FOR_CONFIRM') . '/landing/email-verified');
+		}else if($email){
+          $email->is_verified=1;
+					$email->save();
+					return redirect(env('FRONTEND_URL_FOR_CONFIRM') . '/profile');
 		}
 		else
 		{

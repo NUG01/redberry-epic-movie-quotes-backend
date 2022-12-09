@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->string('address');
+            $table->integer('is_verified')->default(0);
             $table->timestamps();
         });
     }

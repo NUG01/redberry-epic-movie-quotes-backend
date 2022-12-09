@@ -1,0 +1,35 @@
+components:
+  schemas:
+    register:
+      type: object
+      properties:
+        name:
+          type: string
+          example: redberry777
+        email:
+          type: string
+          example: redberry@redberry.ge
+        password:
+          type: string
+          example: redberry123
+        password_confirmation:
+          type: string
+          example: redberry123
+      required:  
+        - name
+        - email    
+        - password    
+        - password_confirmation
+    login:
+      type: object
+      properties:
+        name:
+          type: string
+          example: redberry777
+        password:
+          type: string
+          example: redberry123
+      required:  
+        - name
+        - password
+      

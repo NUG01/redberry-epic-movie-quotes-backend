@@ -1,0 +1,30 @@
+paths:
+  /comments/{quote}:
+    get:
+      tags:
+        - Comments
+      summary: Returns comments for specific quote
+      parameters:
+        - in: path
+          name: quote
+          schema:
+            type: integer
+          required: true     
+      responses:
+        '200':
+          $ref: "../responses/comments.yaml#/components/responses/comments_quote/200"         
+  /comments:
+    post:
+      tags:
+        - Comments
+      summary: Creates comment
+      requestBody:
+        description: Creates new comment
+        content:
+            application/json:
+              schema:
+                $ref: "../schemas/comments.yaml#/components/schemas/comments"     
+      responses:
+        '200':
+          $ref: "../responses/comments.yaml#/components/responses/comments/200"                         
+          

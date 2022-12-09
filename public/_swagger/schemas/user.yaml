@@ -1,0 +1,37 @@
+components:
+  schemas:
+    user_profile:
+      type: object
+      properties:
+        new_email:
+          type: string
+          example: redberry2@redberry.ge
+      required:  
+          - new_email
+    user_newEmail:
+      type: object
+      properties:
+        email:
+          type: string
+          example: redberry2@redberry.ge
+    user_email:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Arthur Dent
+        email:
+          type: string
+          example: redberry@redberry.ge
+        thumbnail:
+          type: string
+          example: images/G9AbFn69bIW6arB3QuBeFLNAVY6k5SaOJpiod4tf.png
+        password:
+          type: string
+          example: $2y$10$1mPWnaBfroW7yA.MeFtdF.FiUijlxU3n9r0rhDE8UJ5atoyl2l4aS
+      required:  
+        - name
+        - email    
+        - thumbnail    
+        - password
+      

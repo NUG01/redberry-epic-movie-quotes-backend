@@ -6,60 +6,65 @@ paths:
       summary: Returns the user
       description: Returns user info if authorization is successfull
       responses:
-        '200': 
-          description: A JSON object of user
-          content:
-            application/json:
-              schema: 
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    example: 4
-                  name:
-                    type: string
-                    example: Arthur Dent
-                  email:
-                    type: string
-                    example: redberry@redberry.ge
-                  thumbnail:
-                    type: string
-                    example: images/G9AbFn69bIW6arB3QuBeFLNAVY6k5SaOJpiod4tf.png
-                  google_id:
-                    type: integer
-                    example: 106421724346060553447
-                  emails:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                        example: 1
-                      user_id:
-                        type: integer
-                        example: 4
-                      address:
-                        type: string
-                        example: redberry2@redberry.ge
-                      created_at:
-                        type: string
-                        example: 2022-12-03T05:53:35.000000Z
-                      updated_at:
-                        type: string
-                        example: 2022-12-03T05:53:35.000000Z
-  # /user/profile:
-  #   post:
-  #     tags:
-  #       - User
-  #     summary: Updates the user profile
-  #     description: Updates just name for google user and everything for regular user
-  #     requestBody:
-  #       description: Update an existent user
-  #       content:
-  #         # required: true
-  #         multipart/form-data:
-  #           schema:
-  #             type: object
-  #               properties:
-  #                 name:
-  #                   type: string
-  #                   example: Arthur Dent
+        '200':
+          $ref: "../responses/user.yaml#/components/responses/user/200"  
+      security: []                           
+  /user/profile:
+    post:
+      tags:
+        - User
+      summary: Updates the user profile
+      description: Updates just name for google user and everything for regular user
+      requestBody:
+        description: Update an existent user
+        content:
+            multipart/form-data:
+              schema:
+                $ref: "../schemas/user.yaml#/components/schemas/user_profile"        
+      responses:
+        '200':
+          $ref: "../responses/user.yaml#/components/responses/user_profile/200"
+  /user/newEmail:
+    post:
+      tags:
+        - User
+      summary: Adds new emails
+      description: Adds new email to the user
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: "../schemas/user.yaml#/components/schemas/user_newEmail"       
+      responses:
+        '200':
+          $ref: "../responses/user.yaml#/components/responses/user_newEmail/200"
+  /user/email:
+    post:
+      tags:
+        - User
+      summary: Updating email
+      description: Updates user email
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: "../schemas/user.yaml#/components/schemas/user_email"       
+      responses:
+        '200':
+          $ref: "../responses/user.yaml#/components/responses/user_email/200"
+  /user/email/{email}:
+    delete:
+      tags:
+        - User
+      summary: Deletes extra email
+      parameters:
+        - in: path
+          name: email
+          schema:
+            type: integer
+            minimum: 1
+          required: true      
+      responses:
+        '200':
+          $ref: "../responses/user.yaml#/components/responses/user_email_email/200"
+            

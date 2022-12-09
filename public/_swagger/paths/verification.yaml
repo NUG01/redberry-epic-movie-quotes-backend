@@ -1,0 +1,21 @@
+paths:
+  /email-verification:
+    post:
+      tags:
+        - Verification
+      summary: Verifies user via email
+      requestBody:
+        description: Verifies user
+        content:
+            application/json:
+              schema:
+                $ref: "../schemas/verification.yaml#/components/schemas/email-verification" 
+      security: []               
+      responses:
+        '401':
+          description: Failed operation
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 'User can not be verified!'    

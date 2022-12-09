@@ -92,6 +92,8 @@ class UserController extends Controller
 				'user_id'=>jwtUser()->id,
 				'address'=> $request->new_email
 			]);
+      $user=jwtUser();
+			EmailVerificationController::sendEmail($user->name, $request->new_email, $request->new_email, 'Account Confirmation', 'emails.register');
 		return response()->json(Email::where('user_id', jwtUser()->id)->get(), 200);
 	}
 	public function destroy(Email $email): JsonResponse

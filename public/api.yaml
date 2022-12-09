@@ -11,24 +11,75 @@ servers:
     description: production server
 
 
+components:
+  securitySchemes:
+    cookieAuth:        
+      type: apiKey
+      in: cookie
+      name: access_token 
+security:
+  - cookieAuth: []
+
+
 
 paths:
  /user:
     $ref: "./_swagger/paths/user.yaml#/paths/~1user"
-#  /user/profile: 
-#     $ref: "./_swagger/paths/user.yaml#/paths/~1user~1profile"
-
-
-# paths:
-#   /users:
-#     get:
-#       summary: Returns a list of users.
-#       responses:
-#         '200': 
-#           description: A JSON array of user names
-#           content:
-#             application/json:
-#               schema: 
-#                 type: array
-#                 items: 
-#                   type: string
+ /user/profile: 
+    $ref: "./_swagger/paths/user.yaml#/paths/~1user~1profile"
+ /user/newEmail: 
+    $ref: "./_swagger/paths/user.yaml#/paths/~1user~1newEmail"
+ /user/email: 
+    $ref: "./_swagger/paths/user.yaml#/paths/~1user~1email"
+ /user/email/{email}: 
+    $ref: "./_swagger/paths/user.yaml#/paths/~1user~1email~1{email}"
+ /forgot-password: 
+    $ref: "./_swagger/paths/password.yaml#/paths/~1forgot-password"
+ /reset-password: 
+    $ref: "./_swagger/paths/password.yaml#/paths/~1reset-password"
+ /auth/google/redirect: 
+    $ref: "./_swagger/paths/oauth.yaml#/paths/~1auth~1google~1redirect"
+ /auth/google/callback: 
+    $ref: "./_swagger/paths/oauth.yaml#/paths/~1auth~1google~1callback"
+ /register: 
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1register"
+ /login: 
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1login"
+ /logout: 
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1logout"
+ /movies/{user}: 
+    $ref: "./_swagger/paths/movies.yaml#/paths/~1movies~1{user}"
+ /movies/{user}/details: 
+    $ref: "./_swagger/paths/movies.yaml#/paths/~1movies~1{user}~1details"
+ /movies/create: 
+    $ref: "./_swagger/paths/movies.yaml#/paths/~1movies~1create"
+ /movies: 
+    $ref: "./_swagger/paths/movies.yaml#/paths/~1movies"
+ /movies/{movie}: 
+    $ref: "./_swagger/paths/movies.yaml#/paths/~1movies~1{movie}"
+ /quotes: 
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes"
+ /quotes/{movie}: 
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes~1{movie}"
+ /quotes/{quote}/details: 
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes~1{quote}~1details"
+ /quotes/create: 
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes~1create"
+ /quotes/update: 
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes~1update"
+ /quotes/{quote}: 
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes~1{quote}"
+ /comments/{quote}: 
+    $ref: "./_swagger/paths/comments.yaml#/paths/~1comments~1{quote}"
+ /comments: 
+    $ref: "./_swagger/paths/comments.yaml#/paths/~1comments"
+ /likes/{quote}: 
+    $ref: "./_swagger/paths/likes.yaml#/paths/~1likes~1{quote}"
+ /likes: 
+    $ref: "./_swagger/paths/likes.yaml#/paths/~1likes"
+ /notifications/{user}: 
+    $ref: "./_swagger/paths/notifications.yaml#/paths/~1notifications~1{user}"
+ /genres: 
+    $ref: "./_swagger/paths/genres.yaml#/paths/~1genres"
+ /email-verification: 
+    $ref: "./_swagger/paths/verification.yaml#/paths/~1email-verification"

@@ -78,6 +78,11 @@ php artisan config:cache
 ```
 Which generates auth key.
 
+8\. Also execute the following command:
+```sh
+  php artisan db:seed
+```
+
 ##### Now, you should be good to go!
 
 

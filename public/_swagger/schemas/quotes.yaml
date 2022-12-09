@@ -1,0 +1,47 @@
+components:
+  schemas:
+    quotes_create:
+      type: object
+      properties:
+        quote_en:
+          type: string
+          example: Follow the white rabbit 
+        quote_ka:
+          type: string
+          example: თეთრ კურდღელს გაეკიდე 
+        thumbnail:
+          type: string
+          example: images/BIeBbKo2Lc6nbMfk8STZ4yjEERLrTez0dWXEnmHo.png  
+        quote_id:
+          type: integer
+          example: 1 
+        user_id:
+          type: integer
+          example: 4 
+      required:  
+        - quote_en
+        - quote_ka 
+        - thumbnail
+    quotes_update:
+      type: object
+      properties:
+        quote_en:
+          type: string
+          example: Follow the white rabbit 
+        quote_ka:
+          type: string
+          example: თეთრ კურდღელს გაეკიდე 
+        thumbnail:
+          type: string
+          example: images/BIeBbKo2Lc6nbMfk8STZ4yjEERLrTez0dWXEnmHo.png  
+        quote_id:
+          type: integer
+          example: 1 
+        user_id:
+          type: integer
+          example: 4 
+      required:  
+        - quote_en
+        - quote_ka 
+        - thumbnail
+      

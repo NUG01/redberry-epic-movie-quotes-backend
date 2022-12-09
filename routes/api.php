@@ -33,7 +33,7 @@ Route::controller(UserController::class)->group(function () {
 	Route::post('user/profile', 'update')->name('update.profile');
 	Route::post('user/newEmail', 'addNewEmail')->name('user.newEmail');
 	Route::post('user/email', 'submitChangeEmail')->name('update.email');
-	Route::post('user/email/{email:id}', 'destroy')->name('delete.email');
+	Route::delete('user/email/{email:id}', 'destroy')->name('delete.email');
 });
 
 Route::controller(PasswordResetController::class)->group(function () {
@@ -49,7 +49,7 @@ Route::controller(OAuthController::class)->group(function () {
 Route::controller(AuthController::class)->group(function () {
 	Route::post('register', 'register')->name('user.register');
 	Route::post('login', 'login')->name('user.login');
-	Route::post('logout', 'logout')->name('user.logout');
+	Route::get('logout', 'logout')->name('user.logout');
 });
 
 Route::controller(MovieController::class)->group(function () {
@@ -65,7 +65,7 @@ Route::controller(QuoteController::class)->group(function () {
 	Route::get('quotes/{movie:id}', 'show')->name('quotes.show');
 	Route::get('quotes/{quote:id}/details', 'quoteDetails')->name('quotes.details');
 	Route::post('quotes/create', 'create')->name('quotes.create');
-	Route::post('quotes', 'update')->name('quotes.update');
+	Route::post('quotes/update', 'update')->name('quotes.update');
 	Route::delete('quotes/{quote:id}', 'destroy')->name('quotes.delete');
 });
 
