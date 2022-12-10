@@ -50,7 +50,7 @@ paths:
         '200':
           $ref: "../responses/quotes.yaml#/components/responses/quotes_create/200"                                
   /quotes/update:
-    post:
+    patch:
       tags:
         - Quotes
       summary: Updates quote

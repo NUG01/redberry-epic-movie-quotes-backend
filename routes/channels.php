@@ -14,10 +14,9 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-
 // Broadcast::channel('auth.{id}', function ($user, $id) {
 // 	return true;
-	// return $id === jwtUser()->id;
+// return $id === jwtUser()->id;
 // });
 
 Broadcast::channel('private-notifications.{id}', function ($user, $id) {

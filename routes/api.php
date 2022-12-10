@@ -12,7 +12,6 @@ use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,14 +25,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::controller(UserController::class)->group(function () {
-	Route::get('user', 'user')->name('user.get');
-	Route::get('user/{id}', 'getGoogleUser')->name('user.googleUser');
-	Route::post('user/profile', 'update')->name('update.profile');
-	Route::post('user/newEmail', 'addNewEmail')->name('user.newEmail');
-	Route::post('user/email', 'submitChangeEmail')->name('update.email');
-	Route::delete('user/email/{email:id}', 'destroy')->name('delete.email');
+	Route::get('user', 'index')->name('user.index');
+	Route::patch('user/profile', 'update')->name('user.update');
+	Route::post('user/email', 'submitChangeEmail')->name('user.edit');
+	Route::post('user/newEmail', 'addNewEmail')->name('user.store');
+	Route::delete('user/email/{email}', 'destroy')->name('user.destroy');
 });
 
 Route::controller(PasswordResetController::class)->group(function () {
@@ -49,33 +46,31 @@ Route::controller(OAuthController::class)->group(function () {
 Route::controller(AuthController::class)->group(function () {
 	Route::post('register', 'register')->name('user.register');
 	Route::post('login', 'login')->name('user.login');
-	Route::get('logout', 'logout')->name('user.logout');
+	Route::post('logout', 'logout')->name('user.logout');
 });
 
 Route::controller(MovieController::class)->group(function () {
-	Route::get('movies/{user:id}', 'index')->name('movies.index');
-	Route::get('movies/{movie:id}/details', 'show')->name('movies.get');
-	Route::post('movies/create', 'create')->name('movies.create');
-	Route::post('movies', 'update')->name('movies.update');
-	Route::delete('movies/{movie:id}', 'destroy')->name('movies.delete');
+	Route::get('movies', 'index')->name('movies.index');
+	Route::get('movies/{movie}/details', 'show')->name('movies.show');
+	Route::post('movies', 'create')->name('movies.create');
+	Route::patch('movies', 'update')->name('movies.update');
+	Route::delete('movies/{movie}', 'destroy')->name('movies.destroy');
 });
 
 Route::controller(QuoteController::class)->group(function () {
 	Route::get('quotes', 'index')->name('quotes.index');
 	Route::get('quotes/{movie:id}', 'show')->name('quotes.show');
-	Route::get('quotes/{quote:id}/details', 'quoteDetails')->name('quotes.details');
-	Route::post('quotes/create', 'create')->name('quotes.create');
-	Route::post('quotes/update', 'update')->name('quotes.update');
-	Route::delete('quotes/{quote:id}', 'destroy')->name('quotes.delete');
+	Route::get('quotes/{quote}/details', 'quote')->name('quotes.details');
+	Route::post('quotes', 'create')->name('quotes.create');
+	Route::patch('quotes/{quote}', 'update')->name('quotes.update');
+	Route::delete('quotes/{quote}', 'destroy')->name('quotes.destroy');
 });
 
 Route::controller(CommentController::class)->group(function () {
-	Route::get('comments/{quote:id}', 'index')->name('comments.index');
 	Route::post('comments', 'create')->name('comments.create');
 });
 
 Route::controller(LikeController::class)->group(function () {
-	Route::get('likes/{quote:id}', 'index')->name('likes.index');
 	Route::post('likes', 'create')->name('likes.create');
 });
 

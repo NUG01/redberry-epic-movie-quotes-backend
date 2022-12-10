@@ -27,7 +27,7 @@ paths:
       responses:
         '200':
           $ref: "../responses/movies.yaml#/components/responses/movies_user_details/200"     
-  /movies/create:
+  /movies:
     post:
       tags:
         - Movies
@@ -41,8 +41,8 @@ paths:
       responses:
         '200':
           $ref: "../responses/movies.yaml#/components/responses/movies_create/200"                           
-  /movies:
-    post:
+  /movies/update:
+    patch:
       tags:
         - Movies
       summary: Updates movie

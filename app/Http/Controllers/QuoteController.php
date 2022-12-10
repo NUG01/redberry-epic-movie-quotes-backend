@@ -3,56 +3,47 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddQuoteRequest;
-use App\Models\Comment;
-use App\Models\Like;
+use App\Models\Movie;
 use App\Models\Quote;
 use Illuminate\Http\JsonResponse;
 
 class QuoteController extends Controller
 {
-	
 	public function index(): JsonResponse
 	{
-		$quotesData=Quote::orderBy('id', 'DESC')->with('comments','comments.user:id,name,thumbnail', 'likes', 'user:id,name,thumbnail', 'movie:id,name')->paginate(5);
-		return response()->json($quotesData, 200);
+		$quotes = Quote::orderBy('id', 'DESC')->with('comments', 'comments.user:id,name,thumbnail', 'likes', 'user:id,name,thumbnail', 'movie:id,name')->paginate(5);
+		return response()->json($quotes);
 	}
 
-	
-	public function show($movie): JsonResponse
+	public function show(Movie $movie): JsonResponse
 	{
-		$quoteList = Quote::where('movie_id', $movie)->with('likes', 'comments')->get();
-		return response()->json($quoteList, 200);
+		$quotes = $movie->quotes->with('likes', 'comments')->get();
+		return response()->json($quotes);
 	}
 
-
-
-
-
-
-	public function quoteDetails(Quote $quote): JsonResponse
+	public function quote($quote): JsonResponse
 	{
-		$commentsData=Comment::where('quote_id', $quote->id)->with('user:id,name,thumbnail')->get();
-		return response()->json(['quote'=>$quote, 'comments'=> $commentsData, 'likes'=>$quote->likes], 200);
+		$quoteDetails = Quote::where('id', $quote)->with('comments', 'comments.user:id,name,thumbnail', 'likes', 'user:id,name,thumbnail')->first();
+		return response()->json(['quote'=>$quoteDetails]);
 	}
 
 	public function destroy(Quote $quote): JsonResponse
 	{
 		$quote->delete();
-		return response()->json('Successfully deleted!', 200);
+		return response()->json('Successfully deleted!');
 	}
 
-	public function update(AddQuoteRequest $request): JsonResponse
+	public function update(Quote $quote, AddQuoteRequest $request): JsonResponse
 	{
-		$quote = Quote::where('id', $request->quote_id)->first();
 		$this->updateOrCreateQuote($request, $quote);
-		return response()->json('Successfully updated!', 200);
+		return response()->json('Successfully updated!');
 	}
 
 	public function create(AddQuoteRequest $request, Quote $quote): JsonResponse
 	{
 		$this->updateOrCreateQuote($request, $quote);
-		$quotesData=Quote::with('comments','comments.user:id,name,thumbnail', 'likes', 'user:id,name,thumbnail', 'movie:id,name')->latest()->get();
-		return response()->json(['message'=>'Quote added successfully!', 'attributes'=> $quotesData], 200);
+		$quotes = Quote::where('id', $this->updateOrCreateQuote($request, $quote))->with('comments', 'comments.user:id,name,thumbnail', 'likes', 'user:id,name,thumbnail', 'movie:id,name')->first();
+		return response()->json(['message'=>'Quote added successfully!', 'attributes'=> $quotes]);
 	}
 
 	private function updateOrCreateQuote($request, $quote)
@@ -64,5 +55,6 @@ class QuoteController extends Controller
 		$quote->setTranslation('quote', 'en', $request->quote_en);
 		$quote->setTranslation('quote', 'ka', $request->quote_ka);
 		$quote->save();
+		return $quote->id;
 	}
 }

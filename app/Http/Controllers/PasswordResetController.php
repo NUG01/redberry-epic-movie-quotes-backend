@@ -25,7 +25,7 @@ class PasswordResetController extends Controller
 		$body = 'Forgot password? No worries, you can recover it easily.';
 		$buttonText = 'Recover password';
 		EmailVerificationController::sendVerifyEMail($request->email, $code, 'Reset Password', 'emails.reset', $body, $buttonText, $url);
-		return response()->json('Email sent!', 200);
+		return response()->json('Email sent!');
 	}
 
 	public function submitResetPasswordForm(RecoverPasswordRequest $request): JsonResponse
@@ -46,7 +46,7 @@ class PasswordResetController extends Controller
 			DB::table('password_resets')->where([
 				'email'=> $checkToken->email,
 			])->delete();
-			return response()->json('Password recovered successfully!', 200);
+			return response()->json('Password recovered successfully!');
 		}
 	}
 }

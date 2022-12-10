@@ -19,8 +19,8 @@ class EventServiceProvider extends ServiceProvider
 			SendEmailVerificationNotification::class,
 		],
 		'App\Events\NotificationStatusUpdated' => [
-      'App\Listerners\NotificationStatusUpdatedListener',
-    ],
+			'App\Listerners\NotificationStatusUpdatedListener',
+		],
 	];
 
 	/**

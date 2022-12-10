@@ -13,28 +13,25 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-
-	public function getGoogleUser($id): JsonResponse
+	public function index(): JsonResponse
 	{
-		return response()->json(User::where('id', $id)->first(), 200);
-	}
-
-	public function user(): JsonResponse
-	{
-		$user=jwtUser();
-		if($user){
-			$userData=[
-				'id'=>$user->id,
-				'name'=>$user->name,
-				'email'=>$user->email,
-				'thumbnail'=>$user->thumbnail,
-				'google_id'=>$user->google_id,
-				'emails'=>$user->emails,
+		$user = jwtUser();
+		if ($user)
+		{
+			$userData = [
+				'id'       => $user->id,
+				'name'     => $user->name,
+				'email'    => $user->email,
+				'thumbnail'=> $user->thumbnail,
+				'google_id'=> $user->google_id,
+				'emails'   => $user->emails,
 			];
-    }else{
-			$userData=null;
 		}
-		return response()->json(['message' => 'authenticated successfully', 'user' => $userData], 200);
+		else
+		{
+			$userData = null;
+		}
+		return response()->json(['user' => $userData]);
 	}
 
 	public function update(UpdateProfileRequest $request): JsonResponse
@@ -75,7 +72,7 @@ class UserController extends Controller
 			$data['thumbnail'] = $currentThumbnail;
 		}
 		User::where('email', $email)->update($data);
-		return response()->json($data, 200);
+		return response()->json($data);
 	}
 
 	public function submitChangeEmail(Request $request): JsonResponse
@@ -84,21 +81,23 @@ class UserController extends Controller
 		{
 			DB::table('users')->where('verification_code', $request->token)->update(['email'=>$request->email, 'is_verified'=>1]);
 		}
-		return response()->json('Email changed successfully!', 200);
+		return response()->json('Email changed successfully!');
 	}
+
 	public function addNewEmail(NewEmailRequest $request): JsonResponse
 	{
-			Email::create([
-				'user_id'=>jwtUser()->id,
-				'address'=> $request->new_email
-			]);
-      $user=jwtUser();
-			EmailVerificationController::sendEmail($user->name, $request->new_email, $request->new_email, 'Account Confirmation', 'emails.register');
-		return response()->json(Email::where('user_id', jwtUser()->id)->get(), 200);
+		Email::create([
+			'user_id'=> jwtUser()->id,
+			'address'=> $request->new_email,
+		]);
+		$user = jwtUser();
+		EmailVerificationController::sendEmail($user->name, $request->new_email, $request->new_email, 'Account Confirmation', 'emails.register');
+		return response()->json(Email::where('user_id', jwtUser()->id)->get());
 	}
+
 	public function destroy(Email $email): JsonResponse
 	{
-			$email->delete();
-		return response()->json(Email::where('user_id', jwtUser()->id)->get(), 200);
+		$email->delete();
+		return response()->json(Email::where('user_id', jwtUser()->id)->get());
 	}
 }

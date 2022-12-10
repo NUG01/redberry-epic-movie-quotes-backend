@@ -51,10 +51,10 @@ paths:
     $ref: "./_swagger/paths/movies.yaml#/paths/~1movies~1{user}"
  /movies/{user}/details: 
     $ref: "./_swagger/paths/movies.yaml#/paths/~1movies~1{user}~1details"
- /movies/create: 
-    $ref: "./_swagger/paths/movies.yaml#/paths/~1movies~1create"
  /movies: 
     $ref: "./_swagger/paths/movies.yaml#/paths/~1movies"
+ /movies/update: 
+    $ref: "./_swagger/paths/movies.yaml#/paths/~1movies~1update"
  /movies/{movie}: 
     $ref: "./_swagger/paths/movies.yaml#/paths/~1movies~1{movie}"
  /quotes: 
@@ -69,12 +69,8 @@ paths:
     $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes~1update"
  /quotes/{quote}: 
     $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes~1{quote}"
- /comments/{quote}: 
-    $ref: "./_swagger/paths/comments.yaml#/paths/~1comments~1{quote}"
  /comments: 
     $ref: "./_swagger/paths/comments.yaml#/paths/~1comments"
- /likes/{quote}: 
-    $ref: "./_swagger/paths/likes.yaml#/paths/~1likes~1{quote}"
  /likes: 
     $ref: "./_swagger/paths/likes.yaml#/paths/~1likes"
  /notifications/{user}: 

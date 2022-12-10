@@ -1,18 +1,4 @@
 paths:
-  /likes/{quote}:
-    get:
-      tags:
-        - Likes
-      summary: Returns likes for specific quote
-      parameters:
-        - in: path
-          name: quote
-          schema:
-            type: integer
-          required: true     
-      responses:
-        '200':
-          $ref: "../responses/likes.yaml#/components/responses/likes_quote/200"   
   /likes:
     post:
       tags:

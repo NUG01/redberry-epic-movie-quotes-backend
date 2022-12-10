@@ -34,7 +34,7 @@ class User extends Authenticatable implements MustVerifyEmail
 	{
 		return	$this->hasMany(Movie::class);
 	}
-	
+
 	public function quotes(): HasMany
 	{
 		return	$this->hasMany(Quote::class);
@@ -49,10 +49,12 @@ class User extends Authenticatable implements MustVerifyEmail
 	{
 		return	$this->hasMany(Like::class);
 	}
+
 	public function notifications(): HasMany
 	{
 		return	$this->hasMany(Notification::class);
 	}
+
 	public function emails(): HasMany
 	{
 		return	$this->hasMany(Email::class);

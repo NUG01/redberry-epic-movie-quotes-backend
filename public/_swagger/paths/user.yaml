@@ -10,7 +10,7 @@ paths:
           $ref: "../responses/user.yaml#/components/responses/user/200"  
       security: []                           
   /user/profile:
-    post:
+    patch:
       tags:
         - User
       summary: Updates the user profile

@@ -34,7 +34,7 @@ paths:
           $ref: "../responses/auth.yaml#/components/responses/login/403"
       security: []           
   /logout:
-    get:
+    post:
       tags:
         - Auth
       summary: Logouts user     

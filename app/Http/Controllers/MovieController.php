@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddMovieRequest;
-use App\Models\Genre;
 use App\Models\Movie;
 use App\Models\Quote;
 use Illuminate\Http\JsonResponse;
@@ -11,41 +10,40 @@ use Illuminate\Support\Facades\DB;
 
 class MovieController extends Controller
 {
-
-	public function index($user): JsonResponse
+	public function index(): JsonResponse
 	{
-		return response()->json(Movie::where('user_id', $user)->with('quotes')->get(), 200);
+		return response()->json(Movie::where('user_id', jwtUser()->id)->with('quotes')->get());
 	}
 
 	public function show(Movie $movie): JsonResponse
 	{
-		$quotesData=Quote::where('movie_id', $movie->id)->with('likes', 'comments')->get();
-		return response()->json(['movie'=>$movie, 'genres'=>$movie->genres, 'quotes'=>$quotesData,], 200);
+		$quotes = Quote::where('movie_id', $movie->id)->with('likes', 'comments')->get();
+		return response()->json(['movie'=>$movie, 'genres'=>$movie->genres, 'quotes'=>$quotes]);
 	}
 
 	public function create(AddMovieRequest $request, Movie $movie)
 	{
 		$this->updateOrCreateMovie($request, $movie);
-		return response()->json('Movie added successfully!', 200);
+		return response()->json('Movie added successfully!');
 	}
 
 	public function destroy(Movie $movie): JsonResponse
 	{
 		$movie->delete();
-		return response()->json('Successfully deleted!', 200);
+		return response()->json('Successfully deleted!');
 	}
 
 	public function update(AddMovieRequest $request, Movie $movie): JsonResponse
 	{
 		$movie = $movie->where('id', $request->id)->first();
 		$this->updateOrCreateMovie($request, $movie);
-		return response()->json('Successfully updated!', 200);
+		return response()->json('Successfully updated!');
 	}
 
 	private function updateOrCreateMovie($request, $movie)
 	{
-		$thumbnail = $request->file('thumbnail')->store('images');
-		$movie->thumbnail = $thumbnail;
+		$movie->id ? $movie_id = $movie->id : $movie_id = Movie::orderBy('id', 'desc')->first()->id;
+		$movie->thumbnail = $request->file('thumbnail')->store('images');
 		if ($request->user_id ? $movie->user_id = $request->user_id : null);
 		$movie->setTranslation('name', 'en', $request->name_en);
 		$movie->setTranslation('name', 'ka', $request->name_ka);
@@ -55,15 +53,7 @@ class MovieController extends Controller
 		$movie->setTranslation('description', 'ka', $request->description_ka);
 		$movie->save();
 		$genre = explode(',', $request->genre);
-		$movie_id = Movie::orderBy('created_at', 'desc')->first()->id;
-		$count = count($genre);
 		DB::table('genre_movie')->where('movie_id', $movie_id)->delete();
-		for ($i = 0; $i < $count; $i++)
-		{
-			DB::table('genre_movie')->insert([
-				'movie_id'=> $movie_id,
-				'genre_id'=> $genre[$i],
-			]);
-		}
+		$movie->genres()->attach($genre);
 	}
 }

@@ -39,9 +39,10 @@ return [
 			'driver'   => 'session',
 			'provider' => 'users',
 		],
-		'broadcast' => [
-			'driver' => 'broadcast-token',
-	],
+		'custom' => [
+			'driver'   => 'custom',
+			'provider' => 'users',
+		],
 		'api' => [
 			'driver'   => 'jwt',
 			'provider' => 'users',

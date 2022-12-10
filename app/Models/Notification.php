@@ -8,15 +8,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Notification extends Model
 {
-    use HasFactory;
+	use HasFactory;
 
 	protected $guarded = ['id'];
 
-    public function quote(): BelongsTo
+	public function quote(): BelongsTo
 	{
 		return	$this->belongsTo(Quote::class);
 	}
-    public function user(): BelongsTo
+
+	public function user(): BelongsTo
 	{
 		return	$this->belongsTo(User::class);
 	}
