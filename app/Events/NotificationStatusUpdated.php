@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -26,7 +27,6 @@ class NotificationStatusUpdated implements ShouldBroadcast
 	 */
 	public function broadcastOn()
 	{
-		// return new PrivateChannel('notifications.' . $this->notification['quoteAuthor']);
-		return new PrivateChannel('private-notifications.' . $this->notification['quoteAuthorId']);
+		return new PrivateChannel('notifications.' . $this->notification['quoteAuthorId']);
 	}
 }

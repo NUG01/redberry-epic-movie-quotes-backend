@@ -39,10 +39,10 @@ return [
 			'driver'   => 'session',
 			'provider' => 'users',
 		],
-		'custom' => [
-			'driver'   => 'custom',
+		'firebase' => [
+			'driver' => 'firebase',
 			'provider' => 'users',
-		],
+	],
 		'api' => [
 			'driver'   => 'jwt',
 			'provider' => 'users',

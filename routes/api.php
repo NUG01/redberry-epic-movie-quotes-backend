@@ -25,12 +25,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::controller(UserController::class)->group(function () {
-	Route::get('user', 'index')->name('user.index');
-	Route::patch('user/profile', 'update')->name('user.update');
-	Route::post('user/email', 'submitChangeEmail')->name('user.edit');
-	Route::post('user/newEmail', 'addNewEmail')->name('user.store');
-	Route::delete('user/email/{email}', 'destroy')->name('user.destroy');
+Route::controller(UserController::class)->prefix('user')->group(function () {
+	Route::get('', 'index')->name('user.index');
+	Route::patch('/profile', 'update')->name('user.update');
+	Route::post('/email', 'submitChangeEmail')->name('user.edit');
+	Route::post('/newEmail', 'addNewEmail')->name('user.store');
+	Route::delete('/email/{email}', 'destroy')->name('user.destroy');
 });
 
 Route::controller(PasswordResetController::class)->group(function () {
@@ -38,9 +38,9 @@ Route::controller(PasswordResetController::class)->group(function () {
 	Route::post('reset-password', 'submitResetPasswordForm')->name('password.reset');
 });
 
-Route::controller(OAuthController::class)->group(function () {
-	Route::get('auth/google/redirect', 'redirect')->middleware('web')->name('google.redirect');
-	Route::get('auth/google/callback', 'callback')->name('google.callback');
+Route::controller(OAuthController::class)->prefix('auth/google')->group(function () {
+	Route::get('/redirect', 'redirect')->middleware('web')->name('google.redirect');
+	Route::get('/callback', 'callback')->name('google.callback');
 });
 
 Route::controller(AuthController::class)->group(function () {
@@ -49,21 +49,21 @@ Route::controller(AuthController::class)->group(function () {
 	Route::post('logout', 'logout')->name('user.logout');
 });
 
-Route::controller(MovieController::class)->group(function () {
-	Route::get('movies', 'index')->name('movies.index');
-	Route::get('movies/{movie}/details', 'show')->name('movies.show');
-	Route::post('movies', 'create')->name('movies.create');
-	Route::patch('movies', 'update')->name('movies.update');
-	Route::delete('movies/{movie}', 'destroy')->name('movies.destroy');
+Route::controller(MovieController::class)->prefix('movies')->group(function () {
+	Route::get('', 'index')->name('movies.index');
+	Route::get('/{movie}/details', 'show')->name('movies.show');
+	Route::post('/', 'create')->name('movies.create');
+	Route::patch('', 'update')->name('movies.update');
+	Route::delete('/{movie}', 'destroy')->name('movies.destroy');
 });
 
-Route::controller(QuoteController::class)->group(function () {
-	Route::get('quotes', 'index')->name('quotes.index');
-	Route::get('quotes/{movie:id}', 'show')->name('quotes.show');
-	Route::get('quotes/{quote}/details', 'quote')->name('quotes.details');
-	Route::post('quotes', 'create')->name('quotes.create');
-	Route::patch('quotes/{quote}', 'update')->name('quotes.update');
-	Route::delete('quotes/{quote}', 'destroy')->name('quotes.destroy');
+Route::controller(QuoteController::class)->prefix('quotes')->group(function () {
+	Route::get('', 'index')->name('quotes.index');
+	Route::get('/{movie:id}', 'show')->name('quotes.show');
+	Route::get('/{quote}/details', 'quote')->name('quotes.details');
+	Route::post('', 'create')->name('quotes.create');
+	Route::patch('/{quote}', 'update')->name('quotes.update');
+	Route::delete('/{quote}', 'destroy')->name('quotes.destroy');
 });
 
 Route::controller(CommentController::class)->group(function () {
