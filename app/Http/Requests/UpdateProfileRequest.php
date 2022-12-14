@@ -18,7 +18,7 @@ class UpdateProfileRequest extends FormRequest
 			'name'                 => ['required', 'string', 'min:3', 'max:15', Rule::unique('users')->ignore(jwtUser()->id, 'id')],
 			'email'                => ['email', Rule::unique('users')->ignore(jwtUser()->id, 'id')],
 			'password'             => ['min:8', 'max:15'],
-			'thumbnail'            => ['required', 'image'],
+			'thumbnail'            => [],
 		];
 	}
 }

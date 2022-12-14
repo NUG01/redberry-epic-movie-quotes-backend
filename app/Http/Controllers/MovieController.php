@@ -18,7 +18,7 @@ class MovieController extends Controller
 	public function show(Movie $movie): JsonResponse
 	{
 		$quotes = Quote::where('movie_id', $movie->id)->with('likes', 'comments', 'user:id,name,thumbnail')->get();
-		return response()->json(['movie'=>$movie->with('user:id,name,thumbnail')->first(), 'genres'=>$movie->genres, 'quotes'=>$quotes]);
+		return response()->json(['movie'=>Movie::where('id', $movie->id)->with('user:id,name,thumbnail')->first(), 'genres'=>$movie->genres, 'quotes'=>$quotes]);
 	}
 
 	public function create(AddMovieRequest $request, Movie $movie)
@@ -42,7 +42,8 @@ class MovieController extends Controller
 
 	private function updateOrCreateMovie($request, $movie)
 	{
-		$movie->thumbnail = $request->file('thumbnail')->store('images');
+
+	  if($request->file('thumbnail'))	$movie->thumbnail = $request->file('thumbnail')->store('images');
 		if ($request->user_id ? $movie->user_id = $request->user_id : null);
 		$movie->setTranslation('name', 'en', $request->name_en);
 		$movie->setTranslation('name', 'ka', $request->name_ka);

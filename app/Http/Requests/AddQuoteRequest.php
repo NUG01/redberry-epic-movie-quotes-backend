@@ -16,7 +16,7 @@ class AddQuoteRequest extends FormRequest
 		return [
 			'quote_en'   => ['required', 'string'],
 			'quote_ka'   => ['required', 'string'],
-			'thumbnail'  => ['required', 'image'],
+			'thumbnail'  => [],
 			'id'         => ['numeric'],
 			'quote_id'   => ['numeric'],
 			'user_id'    => ['numeric'],

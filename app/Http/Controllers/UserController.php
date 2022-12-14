@@ -39,7 +39,11 @@ class UserController extends Controller
 		$data = $request->validated();
 		$email = jwtUser()->email;
 		$currentThumbnail = jwtUser()->thumbnail;
-		$thumbnail = $request->file('thumbnail')->store('images');
+		if($request->file('thumbnail')){
+			$thumbnail = $request->file('thumbnail')->store('images');
+		}else{
+			$thumbnail=$currentThumbnail;
+		}
 
 		if ($request->password)
 		{
@@ -57,7 +61,7 @@ class UserController extends Controller
 			$data['is_verified'] = 0;
 		}
 		$data['email'] = $email;
-		if ($currentThumbnail && $currentThumbnail != 'assets/LaracastImage.png' && $thumbnail)
+		if ($currentThumbnail && $currentThumbnail != 'assets/LaracastImage.png' && $thumbnail && $thumbnail!=$currentThumbnail)
 		{
 			$absolutePath = storage_path('/app/' . $currentThumbnail);
 			File::delete($absolutePath);

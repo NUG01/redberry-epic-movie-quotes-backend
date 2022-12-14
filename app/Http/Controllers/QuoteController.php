@@ -50,8 +50,10 @@ class QuoteController extends Controller
 	{
 		if ($request->id ? $quote->movie_id = $request->id : null);
 		if ($request->user_id ? $quote->user_id = $request->user_id : null);
-		$thumbnail = $request->file('thumbnail')->store('images');
-		$quote->thumbnail = $thumbnail;
+		if($request->file('thumbnail')){
+			$thumbnail = $request->file('thumbnail')->store('images');
+			$quote->thumbnail = $thumbnail;
+		} 
 		$quote->setTranslation('quote', 'en', $request->quote_en);
 		$quote->setTranslation('quote', 'ka', $request->quote_ka);
 		$quote->save();
