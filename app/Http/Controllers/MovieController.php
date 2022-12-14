@@ -18,7 +18,7 @@ class MovieController extends Controller
 	public function show(Movie $movie): JsonResponse
 	{
 		$quotes = Quote::where('movie_id', $movie->id)->with('likes', 'comments', 'user:id,name,thumbnail')->get();
-		return response()->json(['movie'=>Movie::where('id', $movie->id)->with('user:id,name,thumbnail')->first(), 'genres'=>$movie->genres, 'quotes'=>$quotes]);
+		return response()->json(['movie'=>$movie->load('user:id,name,thumbnail'), 'genres'=>$movie->genres, 'quotes'=>$quotes]);
 	}
 
 	public function create(AddMovieRequest $request, Movie $movie)

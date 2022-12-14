@@ -9,21 +9,16 @@ use Illuminate\Http\JsonResponse;
 
 class QuoteController extends Controller
 {
-	public function index(): JsonResponse
+
+	public function index(Movie $movie): JsonResponse
 	{
-		$quotes = Quote::orderBy('id', 'DESC')->with('comments', 'comments.user:id,name,thumbnail', 'likes', 'user:id,name,thumbnail', 'movie:id,name')->paginate(5);
+		$quotes = $movie->quotes->load('likes', 'comments')->get();
 		return response()->json($quotes);
 	}
 
-	public function show(Movie $movie): JsonResponse
+	public function show(Quote $quote): JsonResponse
 	{
-		$quotes = $movie->quotes->with('likes', 'comments')->get();
-		return response()->json($quotes);
-	}
-
-	public function quote($quote): JsonResponse
-	{
-		$quoteDetails = Quote::where('id', $quote)->with('comments', 'comments.user:id,name,thumbnail', 'likes', 'user:id,name,thumbnail')->first();
+		$quoteDetails = $quote->load('comments', 'comments.user:id,name,thumbnail', 'likes', 'user:id,name,thumbnail');
 		return response()->json(['quote'=>$quoteDetails]);
 	}
 
