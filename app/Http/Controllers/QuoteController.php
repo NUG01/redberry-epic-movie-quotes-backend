@@ -12,14 +12,14 @@ class QuoteController extends Controller
 
 	public function index(Movie $movie): JsonResponse
 	{
-		$quotes = $movie->quotes->load('likes', 'comments')->get();
+		$quotes = $movie->quotes->load('likes', 'comments');
 		return response()->json($quotes);
 	}
 
 	public function show(Quote $quote): JsonResponse
 	{
-		$quoteDetails = $quote->load('comments', 'comments.user:id,name,thumbnail', 'likes', 'user:id,name,thumbnail');
-		return response()->json(['quote'=>$quoteDetails]);
+		$quote->load('comments', 'comments.user:id,name,thumbnail', 'likes', 'user:id,name,thumbnail');
+		return response()->json(['quote'=>$quote]);
 	}
 
 	public function destroy(Quote $quote): JsonResponse
@@ -37,7 +37,7 @@ class QuoteController extends Controller
 	public function create(AddQuoteRequest $request, Quote $quote): JsonResponse
 	{
 		$this->updateOrCreateQuote($request, $quote);
-		$quotes = Quote::where('id', $this->updateOrCreateQuote($request, $quote))->with('comments', 'comments.user:id,name,thumbnail', 'likes', 'user:id,name,thumbnail', 'movie:id,name')->first();
+		$quotes = Quote::where('id', $this->updateOrCreateQuote($request, $quote))->with('comments', 'comments.user:id,name,thumbnail', 'likes', 'user:id,name,thumbnail', 'movie:id,name')->get();
 		return response()->json(['message'=>'Quote added successfully!', 'attributes'=> $quotes]);
 	}
 

@@ -52,7 +52,7 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::controller(MovieController::class)->prefix('movies')->group(function () {
 	Route::get('/', 'index')->name('movies.index');
-	Route::get('/{movie}/details', 'show')->name('movies.show');
+	Route::get('/{movie}', 'show')->name('movies.show');
 	Route::post('/', 'create')->name('movies.create');
 	Route::patch('/', 'update')->name('movies.update');
 	Route::delete('/{movie}', 'destroy')->name('movies.destroy');
@@ -60,7 +60,7 @@ Route::controller(MovieController::class)->prefix('movies')->group(function () {
 
 Route::controller(QuoteController::class)->prefix('quotes')->group(function () {
 	Route::get('/{movie:id}', 'index')->name('quotes.index');
-	Route::get('/{quote}/details', 'show')->name('quotes.show');
+	Route::get('/{quote}/show', 'show')->name('quotes.show');
 	Route::post('/', 'create')->name('quotes.create');
 	Route::patch('/{quote}', 'update')->name('quotes.update');
 	Route::delete('/{quote}', 'destroy')->name('quotes.destroy');
