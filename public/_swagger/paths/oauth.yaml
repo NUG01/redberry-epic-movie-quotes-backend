@@ -1,0 +1,23 @@
+paths: 
+  /auth/google/redirect:
+    post:
+      tags:
+        - OAuth
+      summary: Redirect to google API
+      description: Inserts new email to the database and sends email confirmation
+      security: []          
+  /auth/google/callback:
+    post:
+      tags:
+        - OAuth
+      summary: Logins with google API
+      description: Inserts new email to the database and sends email confirmation
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: "../schemas/oauth.yaml#/components/schemas/callback"        
+      responses:
+        '200':
+          $ref: "../responses/oauth.yaml#/components/responses/callback/401" 
+      security: []          

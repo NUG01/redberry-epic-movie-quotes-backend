@@ -1,0 +1,40 @@
+components:
+  responses:
+    register:
+      '200':
+        description: Successful operation
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: Registration is successful!
+      "403":
+        description: Failed operation
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: Registration failed!
+    login:
+      '200':
+        description: Successful operation
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: Logged in successfully!
+      '403':
+        description: Failed operation
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: User Does not exist!
+    logout:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: object
+              example: Successfully logged out

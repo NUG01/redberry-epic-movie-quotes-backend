@@ -10,9 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject, MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail
 {
 	use HasApiTokens;
 
@@ -31,18 +30,33 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 		'email_verified_at' => 'datetime',
 	];
 
-	public function getJWTIdentifier()
-	{
-		return $this->getKey();
-	}
-
-	public function getJWTCustomClaims()
-	{
-		return [];
-	}
-
 	public function movies(): HasMany
 	{
 		return	$this->hasMany(Movie::class);
+	}
+
+	public function quotes(): HasMany
+	{
+		return	$this->hasMany(Quote::class);
+	}
+
+	public function comments(): HasMany
+	{
+		return	$this->hasMany(Comment::class);
+	}
+
+	public function likes(): HasMany
+	{
+		return	$this->hasMany(Like::class);
+	}
+
+	public function notifications(): HasMany
+	{
+		return	$this->hasMany(Notification::class);
+	}
+
+	public function emails(): HasMany
+	{
+		return	$this->hasMany(Email::class);
 	}
 }

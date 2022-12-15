@@ -14,11 +14,12 @@ class AddQuoteRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'quote_en'   => ['required'],
-			'quote_ka'   => ['required'],
-			'thumbnail'  => ['image'],
-			'id'         => [''],
-			'quote_id'   => [''],
+			'quote_en'   => ['required', 'string'],
+			'quote_ka'   => ['required', 'string'],
+			'thumbnail'  => [],
+			'id'         => ['numeric'],
+			'quote_id'   => ['numeric'],
+			'user_id'    => ['numeric'],
 		];
 	}
 }

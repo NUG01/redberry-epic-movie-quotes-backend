@@ -1,0 +1,84 @@
+paths:
+  /quotes:
+    get:
+      tags:
+        - Quotes
+      summary: Returns all quotes with pagination
+      responses:
+        '200':
+          $ref: "../responses/quotes.yaml#/components/responses/quotes/200"   
+  /quotes/{movie}:
+    get:
+      tags:
+        - Quotes
+      summary: Returns quotes for specific movie
+      parameters:
+        - in: path
+          name: movie
+          schema:
+            type: integer
+          required: true     
+      responses:
+        '200':
+          $ref: "../responses/quotes.yaml#/components/responses/quotes_movie/200"                            
+  /quotes/{quote}/details:
+    get:
+      tags:
+        - Quotes
+      summary: Returns quote details
+      parameters:
+        - in: path
+          name: quote
+          schema:
+            type: integer
+          required: true     
+      responses:
+        '200':
+          $ref: "../responses/quotes.yaml#/components/responses/quotes_quote_details/200"   
+  /quotes/create:
+    post:
+      tags:
+        - Quotes
+      summary: Creates quote
+      requestBody:
+        description: Creates new quote
+        content:
+            application/json:
+              schema:
+                $ref: "../schemas/quotes.yaml#/components/schemas/quotes_create"      
+      responses:
+        '200':
+          $ref: "../responses/quotes.yaml#/components/responses/quotes_create/200"                                
+  /quotes/update:
+    patch:
+      tags:
+        - Quotes
+      summary: Updates quote
+      requestBody:
+        description: Updates existing quote
+        content:
+            application/json:
+              schema:
+                $ref: "../schemas/quotes.yaml#/components/schemas/quotes_update"      
+      responses:
+        '200':
+          $ref: "../responses/quotes.yaml#/components/responses/quotes_update/200"   
+  /quotes/{quote}:
+    delete:
+      tags:
+        - Quotes
+      summary: Deletes quote
+      requestBody:
+        description: Deletes existing quote
+        content:
+        parameters:
+        - in: path
+          name: quote
+          schema:
+            type: integer
+          required: true   
+      responses:
+        '200':
+          $ref: "../responses/quotes.yaml#/components/responses/quotes_quote/200"   
+                                          
+                                           

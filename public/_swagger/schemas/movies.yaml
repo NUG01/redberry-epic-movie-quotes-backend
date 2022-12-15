@@ -1,0 +1,75 @@
+components:
+  schemas:
+    movies_create:
+      type: object
+      properties:
+        name_en:
+          type: string
+          example: The matrix
+        name_ka:
+          type: string
+          example: მატრიცა
+        genre:
+          type: array
+          example: ['Psychology', 'Fighting']
+        director_en:
+          type: string
+          example: Bros
+        director_ka:
+          type: string
+          example: ძმები
+        description_en:
+          type: string
+          example: Incredible
+        description_ka:
+          type: string
+          example: წარმოუდგენელი
+        thumbnail:
+          type: string
+          example: images/BIeBbKo2Lc6nbMfk8STZ4yjEERLrTez0dWXEnmHo.png  
+      required:  
+        - name_en
+        - name_ka
+        - genre    
+        - director_en    
+        - director_ka    
+        - description_en    
+        - description_ka    
+        - thumbnail
+    movies:
+      type: object
+      properties:
+        name_en:
+          type: string
+          example: The matrix
+        name_ka:
+          type: string
+          example: მატრიცა
+        genre:
+          type: array
+          example: ['Psychology', 'Fighting']
+        director_en:
+          type: string
+          example: Bros
+        director_ka:
+          type: string
+          example: ძმები
+        description_en:
+          type: string
+          example: Incredible
+        description_ka:
+          type: string
+          example: წარმოუდგენელი
+        thumbnail:
+          type: string
+          example: images/BIeBbKo2Lc6nbMfk8STZ4yjEERLrTez0dWXEnmHo.png  
+      required:  
+        - name_en
+        - name_ka
+        - genre    
+        - director_en    
+        - director_ka    
+        - description_en    
+        - description_ka    
+        - thumbnail
+      

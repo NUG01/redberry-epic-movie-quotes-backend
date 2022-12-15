@@ -3,19 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Carbon\Carbon;
+use Firebase\JWT\JWT;
+use Illuminate\Http\RedirectResponse;
 use Laravel\Socialite\Facades\Socialite;
 
 class OAuthController extends Controller
 {
-	public function redirect()
+	public function redirect(): RedirectResponse
 	{
 		return Socialite::driver('google')->redirect();
 	}
 
-	public function callback()
+	public function callback(): RedirectResponse
 	{
 		$googleUser = Socialite::driver('google')->stateless()->user();
-
+		if (User::where('email', $googleUser->email)->where('google_id', null)->first())
+		{
+			return redirect(env('FRONTEND_URL_FOR_CONFIRM') . '/landing');
+		}
 		$user = User::updateOrCreate(
 			[
 				'google_id' => $googleUser->id,
@@ -30,8 +36,19 @@ class OAuthController extends Controller
 			]
 		);
 
-		auth()->user($user);
-		$token = auth()->attempt(['name' => $googleUser->name, 'email' => $googleUser->email, 'password'=>$googleUser->id]);
-		return redirect(env('FRONTEND_URL') . '/oauth' . '?token=' . $token . '&expires_in=' . auth()->factory()->getTTL() * 60 . '&token_type=bearer');
+		$token = auth()->attempt(['email' => $googleUser->email, 'password'=>$googleUser->id]);
+		if (!$token)
+		{
+			return response()->json(['error' => 'User Does not exist!'], 401);
+		}
+
+		$payload = [
+			'exp' => Carbon::now()->addMinutes(30)->timestamp,
+			'uid' => User::where('email', $googleUser->email)->first()->id,
+		];
+
+		$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
+		$cookie = cookie('access_token', $jwt, 30, '/', env('FRONTEND_URL'), true, true, false, 'Strict');
+		return redirect(env('FRONTEND_URL_FOR_CONFIRM') . '/oauth')->withCookie($cookie);
 	}
 }

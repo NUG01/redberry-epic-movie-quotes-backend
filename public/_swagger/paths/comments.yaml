@@ -1,0 +1,16 @@
+paths:       
+  /comments:
+    post:
+      tags:
+        - Comments
+      summary: Creates comment
+      requestBody:
+        description: Creates new comment
+        content:
+            application/json:
+              schema:
+                $ref: "../schemas/comments.yaml#/components/schemas/comments"     
+      responses:
+        '200':
+          $ref: "../responses/comments.yaml#/components/responses/comments/200"                         
+          

@@ -1,0 +1,15 @@
+paths:
+  /notifications/{user}:
+    get:
+      tags:
+        - Notifications
+      summary: Returns notifications for user posts
+      parameters:
+        - in: path
+          name: user
+          schema:
+            type: integer
+          required: true     
+      responses:
+        '200':
+          $ref: "../responses/notifications.yaml#/components/responses/notifications/200"    

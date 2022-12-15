@@ -1,0 +1,11 @@
+paths:
+  /genres:
+    get:
+      tags:
+        - Genres
+      summary: Returns genres   
+      responses:
+        200':
+          $ref: "../responses/genres.yaml#/components/responses/genres/200" 
+
+                   

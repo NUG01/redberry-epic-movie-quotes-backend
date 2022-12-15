@@ -1,0 +1,11 @@
+components:
+  schemas:
+    email-verification:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 8bd81d592b5be48078728328e521e7c5411b3a2e
+      required:  
+        - code
+      
