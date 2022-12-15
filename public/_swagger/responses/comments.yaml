@@ -1,0 +1,10 @@
+components:
+  responses:
+    comments:
+      '200':
+        description: Successful operation
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: 'Comment added successfully!'

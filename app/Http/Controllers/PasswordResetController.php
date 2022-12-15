@@ -6,12 +6,13 @@ use App\Http\Requests\RecoverPasswordRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class PasswordResetController extends Controller
 {
-	public function submitForgetPasswordForm(ResetPasswordRequest $request)
+	public function submitForgetPasswordForm(ResetPasswordRequest $request): JsonResponse
 	{
 		$code = bin2hex(random_bytes(32));
 		DB::table('password_resets')->insert([
@@ -20,14 +21,14 @@ class PasswordResetController extends Controller
 			'created_at'=> Carbon::now(),
 		]);
 
-		$url = env('FRONTEND_URL') . '/landing/recover-password/' . $code . '?email=' . $request->email;
+		$url = env('FRONTEND_URL_FOR_CONFIRM') . '/landing/recover-password/' . $code . '?email=' . $request->email;
 		$body = 'Forgot password? No worries, you can recover it easily.';
 		$buttonText = 'Recover password';
 		EmailVerificationController::sendVerifyEMail($request->email, $code, 'Reset Password', 'emails.reset', $body, $buttonText, $url);
-		return response()->json('Email sent!', 200);
+		return response()->json('Email sent!');
 	}
 
-	public function submitResetPasswordForm(RecoverPasswordRequest $request)
+	public function submitResetPasswordForm(RecoverPasswordRequest $request): JsonResponse
 	{
 		$checkToken = DB::table('password_resets')->where([
 			'token'=> $request->token['id'],
@@ -45,7 +46,7 @@ class PasswordResetController extends Controller
 			DB::table('password_resets')->where([
 				'email'=> $checkToken->email,
 			])->delete();
-			return response()->json('Password recovered successfully!', 200);
+			return response()->json('Password recovered successfully!');
 		}
 	}
 }

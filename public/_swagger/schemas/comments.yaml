@@ -1,0 +1,19 @@
+components:
+  schemas:
+    comments:
+      type: object
+      properties:
+        quote_id:
+          type: integer
+          example: 1
+        user_id:
+          type: integer
+          example: 4
+        body:
+          type: text
+          example: Random comment
+      required:  
+        - quote_id
+        - user_id
+        - body
+      

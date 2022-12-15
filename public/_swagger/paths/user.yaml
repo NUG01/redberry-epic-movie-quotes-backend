@@ -1,0 +1,70 @@
+paths:
+  /user:
+    get:
+      tags:
+        - User
+      summary: Returns the user
+      description: Returns user info if authorization is successfull
+      responses:
+        '200':
+          $ref: "../responses/user.yaml#/components/responses/user/200"  
+      security: []                           
+  /user/profile:
+    patch:
+      tags:
+        - User
+      summary: Updates the user profile
+      description: Updates just name for google user and everything for regular user
+      requestBody:
+        description: Update an existent user
+        content:
+            multipart/form-data:
+              schema:
+                $ref: "../schemas/user.yaml#/components/schemas/user_profile"        
+      responses:
+        '200':
+          $ref: "../responses/user.yaml#/components/responses/user_profile/200"
+  /user/newEmail:
+    post:
+      tags:
+        - User
+      summary: Adds new emails
+      description: Adds new email to the user
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: "../schemas/user.yaml#/components/schemas/user_newEmail"       
+      responses:
+        '200':
+          $ref: "../responses/user.yaml#/components/responses/user_newEmail/200"
+  /user/email:
+    post:
+      tags:
+        - User
+      summary: Updating email
+      description: Updates user email
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: "../schemas/user.yaml#/components/schemas/user_email"       
+      responses:
+        '200':
+          $ref: "../responses/user.yaml#/components/responses/user_email/200"
+  /user/email/{email}:
+    delete:
+      tags:
+        - User
+      summary: Deletes extra email
+      parameters:
+        - in: path
+          name: email
+          schema:
+            type: integer
+            minimum: 1
+          required: true      
+      responses:
+        '200':
+          $ref: "../responses/user.yaml#/components/responses/user_email_email/200"
+            

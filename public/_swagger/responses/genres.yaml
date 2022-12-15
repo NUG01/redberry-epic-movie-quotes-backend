@@ -1,0 +1,25 @@
+components:
+  responses:
+    genres:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                genres:
+                  type: object
+                  properties:
+                    id:
+                      name: integer  
+                      example: 1  
+                    name:
+                      name: string  
+                      example: Anime  
+                    created_at:
+                      type: string
+                      example: 2022-12-03T05:53:35.000000Z
+                    updated_at:
+                      type: string
+                      example: 2022-12-03T05:53:35.000000Z  

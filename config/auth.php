@@ -13,7 +13,7 @@ return [
 	*/
 
 	'defaults' => [
-		'guard'     => 'api',
+		'guard'     => 'web',
 		'passwords' => 'users',
 	],
 
@@ -39,7 +39,10 @@ return [
 			'driver'   => 'session',
 			'provider' => 'users',
 		],
-
+		'firebase' => [
+			'driver' => 'firebase',
+			'provider' => 'users',
+	],
 		'api' => [
 			'driver'   => 'jwt',
 			'provider' => 'users',
@@ -68,11 +71,6 @@ return [
 			'driver' => 'eloquent',
 			'model'  => App\Models\User::class,
 		],
-
-		// 'users' => [
-		//     'driver' => 'database',
-		//     'table' => 'users',
-		// ],
 	],
 
 	/*
@@ -110,5 +108,7 @@ return [
 	|
 	*/
 
-	'password_timeout' => 10800,
+	'password_timeout'           => 10800,
+	'jwt_secret'                 => env('JWT_SECRET'),
+	'front_end_top_level_domain' => env('FRONTEND_URL'),
 ];

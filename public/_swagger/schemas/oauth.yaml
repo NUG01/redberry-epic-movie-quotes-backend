@@ -1,0 +1,32 @@
+components:
+  schemas:
+    callback:
+      type: object
+      properties:
+        google_id:
+          type: integer
+          example: 112875357066448507617
+        name:
+          type: string
+          example: Username
+        email:
+          type: string
+          example: redberry@gmail.com
+        google_token:
+          type: string
+          example: ya29.a0AeTM1ieJ9SuXT4qAaNfADlsewaCjYzltj3Nw30Hr_q4x4uZwnxBCYdzRCUU0_rRAMgS0j3FG_mTEOLaz-DMnr32of5NxBOoVRQ9IaQ-BB4cl-y7AXNhdjhRxYgJTapFpzuib9kzwQfonoTDRzLWkifXqkcDa9waCgYKAbwSARISFQHWtWOmsTdjxNj26BrRX43HE3RTgg0165
+        password:
+          type: string
+          example: redberry123
+        is_verified:
+          type: integer
+          example: 1
+        google_refresh_token:
+          type: string
+          example: null
+      required:  
+          - google_id       
+          - name       
+          - email       
+          - google_token
+      

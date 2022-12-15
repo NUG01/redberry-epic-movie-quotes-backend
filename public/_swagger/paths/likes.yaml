@@ -1,0 +1,17 @@
+paths:
+  /likes:
+    post:
+      tags:
+        - Likes
+      summary: Creates like
+      requestBody:
+        description: Creates new like
+        content:
+            application/json:
+              schema:
+                $ref: "../schemas/likes.yaml#/components/schemas/likes"      
+      responses:
+        '200':
+          $ref: "../responses/likes.yaml#/components/responses/likes/200"
+                                
+          

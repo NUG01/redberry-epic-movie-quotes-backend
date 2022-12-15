@@ -3,48 +3,55 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddQuoteRequest;
+use App\Models\Movie;
 use App\Models\Quote;
+use Illuminate\Http\JsonResponse;
 
 class QuoteController extends Controller
 {
-	public function index($id)
+
+	public function index(Movie $movie): JsonResponse
 	{
-		$quoteList = Quote::where('movie_id', $id)->get();
-		return response()->json($quoteList, 200);
+		$quotes = $movie->quotes->load('likes', 'comments');
+		return response()->json($quotes);
 	}
 
-	public function getChoosenQuote($id)
+	public function show(Quote $quote): JsonResponse
 	{
-		$quote = Quote::where('id', $id)->first();
-		return response()->json($quote, 200);
+		$quote->load('comments', 'comments.user:id,name,thumbnail', 'likes', 'user:id,name,thumbnail');
+		return response()->json(['quote'=>$quote]);
 	}
 
-	public function destroy($id)
+	public function destroy(Quote $quote): JsonResponse
 	{
-		Quote::where('id', $id)->delete();
-		return response()->json('Successfully deleted!', 200);
+		$quote->delete();
+		return response()->json('Successfully deleted!');
 	}
 
-	public function update(AddQuoteRequest $request)
-	{
-		$quote = Quote::where('id', $request->quote_id)->first();
-		$this->updateOrCreateQuote($request, $quote);
-		return response()->json('Successfully updated!', 200);
-	}
-
-	public function create(AddQuoteRequest $request, Quote $quote)
+	public function update(Quote $quote, AddQuoteRequest $request): JsonResponse
 	{
 		$this->updateOrCreateQuote($request, $quote);
-		return response()->json('Quote added successfully!', 200);
+		return response()->json('Successfully updated!');
+	}
+
+	public function create(AddQuoteRequest $request, Quote $quote): JsonResponse
+	{
+		$this->updateOrCreateQuote($request, $quote);
+		$quotes = Quote::where('id', $this->updateOrCreateQuote($request, $quote))->with('comments', 'comments.user:id,name,thumbnail', 'likes', 'user:id,name,thumbnail', 'movie:id,name')->get();
+		return response()->json(['message'=>'Quote added successfully!', 'attributes'=> $quotes]);
 	}
 
 	private function updateOrCreateQuote($request, $quote)
 	{
 		if ($request->id ? $quote->movie_id = $request->id : null);
-		$thumbnail = $request->file('thumbnail')->store('images');
-		$quote->thumbnail = $thumbnail;
+		if ($request->user_id ? $quote->user_id = $request->user_id : null);
+		if($request->file('thumbnail')){
+			$thumbnail = $request->file('thumbnail')->store('images');
+			$quote->thumbnail = $thumbnail;
+		} 
 		$quote->setTranslation('quote', 'en', $request->quote_en);
 		$quote->setTranslation('quote', 'ka', $request->quote_ka);
 		$quote->save();
+		return $quote->id;
 	}
 }

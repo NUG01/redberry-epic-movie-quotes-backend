@@ -16,10 +16,6 @@ class Movie extends Model
 
 	public $translatable = ['name', 'director', 'description'];
 
-	protected $casts = [
-		'genre' => 'array',
-	];
-
 	public function user(): BelongsTo
 	{
 		return	$this->belongsTo(User::class);
@@ -28,5 +24,10 @@ class Movie extends Model
 	public function quotes(): HasMany
 	{
 		return	$this->hasMany(Quote::class);
+	}
+
+	public function genres()
+	{
+		return $this->belongsToMany(Genre::class);
 	}
 }
