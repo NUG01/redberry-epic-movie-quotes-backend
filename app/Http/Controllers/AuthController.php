@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -20,24 +20,32 @@ class AuthController extends Controller
 
 		if ($user != null)
 		{
-			EmailVerificationController::sendEmail($user->name, $user->email, $user->verification_code);
+			EmailVerificationController::sendEmail($user->name, $user->email, $user->verification_code, 'Account Confirmation', 'emails.register');
 		}
 		return response()->json('Registration is successful!', 200);
 	}
 
-	public function verifyUser(Request $request)
+	public function login(LoginRequest $request)
 	{
-		$verificationCode = $request->code;
-		$user = User::where(['verification_code'=>$verificationCode])->first();
-		if ($user != null)
+		$username = $request->name;
+		$password = $request->password;
+		$usernameType = filter_var($username, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+		$token = auth()->attempt([$usernameType=>$username, 'password'=>$password]);
+		if (!$token)
 		{
-			$user->is_verified = 1;
-			$user->save();
-			return redirect('http://localhost:5173/landing');
+			return response()->json(['error' => 'User Does not exist!'], 404);
 		}
-		else
-		{
-			return response()->json('User can not be verified!', 401);
-		}
+
+		return response()->json([
+			'access_token'=> $token,
+			'token_type'  => 'bearer',
+			'expires_in'  => auth()->factory()->getTTL() * 60,
+		]);
+	}
+
+	public function logout()
+	{
+		auth()->logout();
+		return response()->json(['message' => 'Successfully logged out']);
 	}
 }

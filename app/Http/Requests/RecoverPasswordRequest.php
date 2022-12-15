@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterRequest extends FormRequest
+class RecoverPasswordRequest extends FormRequest
 {
 	/**
 	 * Get the validation rules that apply to the request.
@@ -14,10 +14,9 @@ class RegisterRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'name'                 => ['required', 'min:3', 'max:15', 'unique:users,name'],
-			'email'                => ['required', 'unique:users,email', 'email'],
 			'password'             => ['required', 'min:8', 'max:15'],
-			'password_confirmation'=> ['required', 'same:password'],
+			'token'                => ['required'],
+			'email'                => [''],
 		];
 	}
 }

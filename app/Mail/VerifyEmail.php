@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class RegisterEmail extends Mailable
+class VerifyEmail extends Mailable
 {
 	use Queueable, SerializesModels;
 
@@ -24,6 +24,6 @@ class RegisterEmail extends Mailable
 	{
 		return $this->from(env('MAIL_USERNAME'), 'Epic Movie Quotes')
 		->subject($this->data['subject'])
-		->view($this->data['views'], ['name'=>$this->data['name'], 'url'=>$this->data['verification_code']]);
+		->view($this->data['views'], ['url'=>$this->data['verification_code'], 'body'=>$this->data['body'], 'buttonText'=>$this->data['buttonText']]);
 	}
 }
