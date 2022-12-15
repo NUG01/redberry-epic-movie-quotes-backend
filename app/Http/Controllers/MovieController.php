@@ -19,9 +19,9 @@ class MovieController extends Controller
 	{
 
 		$movie["quotes"] = $movie->quotes()->with('likes', 'comments', 'user:id,name,thumbnail')->get();
-		$movie["genres"] = $movie->genres;
-		$movie["user"] = $movie->user;
-		return response()->json(['movie'=>$movie]);
+		// $movie["genres"] = $movie->genres;
+		// $movie["user"] = $movie->user;
+		return response()->json(['movie'=>$movie->load('genres', 'user')]);
 	}
 
 	public function create(AddMovieRequest $request, Movie $movie)
